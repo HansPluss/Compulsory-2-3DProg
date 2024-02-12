@@ -27,10 +27,12 @@ struct Vertex {
 class Cube {
 public:
 	vector<Vertex> mVertecies;
-	glm::mat4 matrix;
+	glm::vec3 position;
+	float scaleX, scaleY, scaleZ;
 	std::string name;
 
-	Cube(float scale) : a(scale) {
+	Cube(float scale, const glm::vec3& initialPosition = glm::vec3(0.0f,0.0f,0.0f), float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f)
+		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ) {
 		Vertex v0{ -a, -a, a , 1.0f, 0.0f, 0.0f };
 		Vertex v1{ a, -a, a , 0.0f, 1.0f, 0.0f };
 		Vertex v2{ a, a, a , 0.0f, 0.0f, 1.0f };
@@ -99,23 +101,32 @@ public:
 	std::vector<GLfloat> getFlattenedVertices() const {
 		std::vector<GLfloat> flattenedVertices;
 		for (const Vertex& vertex : mVertecies) {
-			flattenedVertices.push_back(vertex.x);
-			flattenedVertices.push_back(vertex.y);
-			flattenedVertices.push_back(vertex.z);
+			flattenedVertices.push_back((vertex.x * scaleX) + position.x);
+			flattenedVertices.push_back((vertex.y * scaleY) + position.y);
+			flattenedVertices.push_back((vertex.z * scaleZ) + position.z);
 			flattenedVertices.push_back(vertex.r);
 			flattenedVertices.push_back(vertex.g);
 			flattenedVertices.push_back(vertex.b);
 		}
 		return flattenedVertices;
 	}
+	void UpdateVertices(float Xspeed,float Yspeed,float Zspeed) {
+
+		for (Vertex& vertex : mVertecies) {
+			vertex.x +=  Xspeed;
+			vertex.y +=  Yspeed;
+			vertex.z +=  Zspeed;
+		}
+		
+	}
 
 private:
 	void flattenVertices() {
 		std::vector<GLfloat> flattenedVertices;
 		for (const Vertex& vertex : mVertecies) {
-			flattenedVertices.push_back(vertex.x);
-			flattenedVertices.push_back(vertex.y);
-			flattenedVertices.push_back(vertex.z);
+			flattenedVertices.push_back((vertex.x * scaleX) + position.x);
+			flattenedVertices.push_back((vertex.y * scaleY) + position.y);
+			flattenedVertices.push_back((vertex.z * scaleZ) + position.z);
 			flattenedVertices.push_back(vertex.r);
 			flattenedVertices.push_back(vertex.g);
 			flattenedVertices.push_back(vertex.b);
@@ -129,6 +140,7 @@ struct Point {
 	float x, y, z;
 
 };
+
 void CreateCoordinateSystem(std::vector<Vertex>& vertices) {
 	// X-axis
 	vertices.push_back({ -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f });
@@ -390,17 +402,20 @@ int main()
 	
 
 	
-	Cube mahCube(1.5f);
+	Cube mahCube(1.5f,glm::vec3(0.0f,-10.0f,0.0f),10.0f,0.5f,10.0f);
 	std::vector<GLfloat> flattenedCubeVertices = mahCube.getFlattenedVertices();
 
+	Cube Cube2(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f);
+	std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+
 	// Generates Vertex Buffer Object and links it to spiral vertices
-	VBO VBO_Spiral(flattenedCubeVertices.data(), flattenedCubeVertices.size() * sizeof(GLfloat));
-	VAO1.LinkAttrib(VBO_Spiral, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO_Spiral, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	VBO VBO_cube(flattenedCubeVertices.data(), flattenedCubeVertices.size() * sizeof(GLfloat));
+	VAO1.LinkAttrib(VBO_cube, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+	VAO1.LinkAttrib(VBO_cube, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
 	VAO VAO2;
 	VAO2.Bind();
-	VBO VBO_Point(flattenedPoints.data(), flattenedPoints.size() * sizeof(glm::vec3));
+	VBO VBO_Point(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
 	VAO2.LinkAttrib(VBO_Point, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
 	VAO2.LinkAttrib(VBO_Point, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	
@@ -410,7 +425,7 @@ int main()
 	// Unbind all to prevent accidentally modifying them
 	
 	VAO1.Unbind();
-	VBO_Spiral.Unbind();
+	VBO_cube.Unbind();
 	VAO2.Unbind();
 	VBO_Point.Unbind();
 	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
@@ -424,7 +439,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	
-
+	double prevFrameTime = 0.0f;
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
@@ -442,24 +457,56 @@ int main()
 
 		glUniform1f(uniID, scaleValue);
 		 //Bind the VAO so OpenGL knows to use it
-		/*VAO1.Bind();
-		glDrawArrays(GL_LINE_STRIP, 0, verticesGraph.size());
-		glLineWidth(5.0f);
-		VAO1.Unbind();*/
-
+	
+		//draw first cube (floor)
 		VAO1.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, mahCube.mVertecies.size());
 		VAO1.Unbind();
 
-		// Draw the points
-		//VAO2.Bind();
-		//glPointSize(25.0f);  // Set point size here
-		//glDrawArrays(GL_POINTS, 0, points.size());
-		//VAO2.Unbind();
-		//
-
+		//draw second cube
+		VAO2.Bind();
+		glDrawArrays(GL_TRIANGLES, 0, Cube2.mVertecies.size());
+		VAO2.Unbind();
+		double currentFrameTime = glfwGetTime();
+		double deltaTime = currentFrameTime - prevFrameTime;
+		prevFrameTime = currentFrameTime;
 		
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		{
+			float translationSpeed = 0.0005f;
+			Cube2.position.x += translationSpeed;
+			
+			Cube2.UpdateVertices(-0.05f,0.0f,0.0f);
+			std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+			VBO_Point.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+		}
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		{
+			float translationSpeed = 0.0005f;
+			Cube2.position.x += translationSpeed;
 
+			Cube2.UpdateVertices(0.05f, 0.0f, 0.0f);
+			std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+			VBO_Point.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+		}
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		{
+			float translationSpeed = 0.0005f;
+			Cube2.position.z += translationSpeed;
+
+			Cube2.UpdateVertices(0.0f, 0.0f, -0.05f);
+			std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+			VBO_Point.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+		}
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		{
+			float translationSpeed = 0.0005f;
+			Cube2.position.z += translationSpeed;
+
+			Cube2.UpdateVertices(0.0f, 0.0f, 0.05f);
+			std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+			VBO_Point.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+		}
 		// Unbind VAO to prevent accidentally modifying it
 		
 		
@@ -477,7 +524,7 @@ int main()
 	VAO1.Delete();
 	VAO2.Delete();
 	VBO_Point.Delete();
-	VBO_Spiral.Delete();
+	VBO_cube.Delete();
 	
 	shaderProgram.Delete();
 	
