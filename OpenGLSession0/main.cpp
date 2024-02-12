@@ -283,33 +283,7 @@ void CreateGraphFromFunction(std::vector<Vertex>& verticesgraph,float c , int it
 	
 
 }
-void FunctionWithTwoVariables(std::vector<Vertex>& verticesgraph, int iterations, const char* filename) {
 
-	for (int i = -50; i <= iterations; ++i) {
-		
-		
-		float n = 0.01f;
-		float x = i * n;
-		for (int j = -50; j <= iterations; ++j) {
-			float y = j * n;
-			//float z = sin(cos(tan(x))) * sin(cos(tan(y)));
-			float z = x * y;
-
-
-			Vertex vertex;
-			vertex.x = x;
-			vertex.y = y;
-			vertex.z = z;
-			vertex.r = 0.0f;
-			vertex.g = 0.1 * abs(x);
-			vertex.b = 0.1 * abs(y);
-
-			verticesgraph.push_back(vertex);
-			//writeToFile(filename, vertex.x, vertex.y, vertex.z, vertex.r, vertex.g, vertex.b);
-
-		}
-	}
-}
 int main()
 {
 	// Initialize GLFW
@@ -349,10 +323,8 @@ int main()
 
 	std::vector<Vertex> verticesGraph;
 	//Readfile("grahTwoVardata.txt", verticesGraph);
-	float a = 0.1f;  // Adjust these parameters accordingly
-	float b = 0.1f;
-	float c = 0.1f;
-	float angularFrequency = 5.1f;
+	
+	
 	int iterations = 200;
 	int start = -200;
 
