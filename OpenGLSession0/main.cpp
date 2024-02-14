@@ -548,7 +548,7 @@ int main()
 			// Check if the new position will cause a collision
 			if (!Cube2.CheckCollision(Cube3))
 			{
-				Cube2.position.x = originalPosition;
+				Cube2.position.x = originalPosition - translationSpeed;
 
 				// Update vertices and VBO
 				Cube2.UpdateVertices(-0.05f, 0.0f, 0.0f);
@@ -559,10 +559,11 @@ int main()
 			{
 				// Handle collision response (adjust position)
 				// You can use MTV or collision point information here
-				Cube2.position.x = CalculateMTV(Cube2, Cube3).x; /* Adjusted position based on collision information */;
-
+				Cube2.position.x -= CalculateMTV(Cube2, Cube3).x; /* Adjusted position based on collision information */;
+				printf(" Collided ");
 				// Update vertices and VBO
-				Cube2.UpdateVertices(-0.05f, 0.0f, 0.0f);
+				
+				Cube2.UpdateVertices(-0.08, 0.0f, 0.0f);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
 			}
@@ -586,10 +587,10 @@ int main()
 			{
 				// Calculate minimum translation vector (MTV) to separate cubes
 				glm::vec3 MTV = CalculateMTV(Cube2, Cube3);
-
+				printf(" Collided ");
 				// Move the cubes away from each other using the MTV
 				Cube2.position.x += MTV.x;
-				Cube2.UpdateVertices(0.05, 0.0f, 0.0f);
+				Cube2.UpdateVertices(0.00f, 0.0f, 0.0f);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
 			}
@@ -615,10 +616,11 @@ int main()
 				glm::vec3 MTV = CalculateMTV(Cube2, Cube3);
 
 				// Move the cubes away from each other using the MTV
-				Cube2.position.z += MTV.z;
-				Cube2.UpdateVertices(0.0f, 0.0f, MTV.z);
+				Cube2.position.z -= MTV.z;
+				Cube2.UpdateVertices(0.00f, 0.0f, 0.0f);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+				
 			}
 		}
 
@@ -643,7 +645,7 @@ int main()
 
 				// Move the cubes away from each other using the MTV
 				Cube2.position.z += MTV.z;
-				Cube2.UpdateVertices(0.0f, 0.0f, MTV.z);
+				Cube2.UpdateVertices(0.00f, 0.0f,0.0f);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
 			}
