@@ -9,6 +9,18 @@ VBO::VBO(GLfloat* vertices, GLsizeiptr size)
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 }
 
+void VBO::UpdateData(const void* data, size_t size)
+{
+	// Bind the VBO
+	Bind();
+
+	// Upload the new data to the GPU
+	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+
+	// Unbind the VBO
+	Unbind();
+}
+
 // Binds the VBO
 void VBO::Bind()
 {

@@ -30,9 +30,10 @@ public:
 	glm::vec3 position;
 	float scaleX, scaleY, scaleZ;
 	std::string name;
+	glm::vec3 velocity;
 
 	Cube(float scale, const glm::vec3& initialPosition = glm::vec3(0.0f,0.0f,0.0f), float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f)
-		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ) {
+		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ), velocity(glm::vec3(0.0f)) {
 		Vertex v0{ -a, -a, a , 1.0f, 0.0f, 0.0f };
 		Vertex v1{ a, -a, a , 0.0f, 1.0f, 0.0f };
 		Vertex v2{ a, a, a , 0.0f, 0.0f, 1.0f };
@@ -119,7 +120,38 @@ public:
 		}
 		
 	}
+	void UpdatePosition(float deltaTime) {
+		position += velocity * deltaTime;
+	}
+	bool CheckCollision(const Cube& otherCube) const {
+		// Iterate through each vertex in the current cube
+		for (const Vertex& vertex : mVertecies) {
+			// Iterate through each vertex in the other cube
+			for (const Vertex& otherVertex : otherCube.mVertecies) {
+				// Calculate the distance between the two vertices
+				float distance = glm::length(glm::vec3(vertex.x * scaleX + position.x,
+					vertex.y * scaleY + position.y,
+					vertex.z * scaleZ + position.z) -
+					glm::vec3(otherVertex.x * otherCube.scaleX + otherCube.position.x,
+						otherVertex.y * otherCube.scaleY + otherCube.position.y,
+						otherVertex.z * otherCube.scaleZ + otherCube.position.z));
 
+				// Check if the distance is less than a threshold (adjust as needed)
+				if (distance < 0.5f) {
+					// Collision detected
+					return true;
+				}
+
+			}
+		}
+
+		// No collision detected
+		return false;
+	}
+	float GetA() {
+
+		return a;
+	}
 private:
 	void flattenVertices() {
 		std::vector<GLfloat> flattenedVertices;
@@ -258,6 +290,28 @@ glm::vec3 LeastSquareMethod() {
 	std::cout << " x: " << x.x << " y: " << x.y << " z: " << x.z << std::endl;
 	return x;
 
+}
+glm::vec3 CalculateMTV(const Cube& cube1, const Cube& cube2)
+{
+	// Calculate the vector from cube1 to cube2
+	glm::vec3 vectorFrom1to2 = cube2.position - cube1.position;
+
+	// Calculate the minimum translation vector (MTV)
+	float xOverlap = fabs(vectorFrom1to2.x) - (cube1.scaleX + cube2.scaleX) / 2.0f;
+	float zOverlap = fabs(vectorFrom1to2.z) - (cube1.scaleZ + cube2.scaleZ) / 2.0f;
+
+	glm::vec3 MTV(0.0f);
+
+	if (xOverlap < zOverlap)
+	{
+		MTV.x = (vectorFrom1to2.x > 0) ? xOverlap : -xOverlap;
+	}
+	else
+	{
+		MTV.z = (vectorFrom1to2.z > 0) ? zOverlap : -zOverlap;
+	}
+
+	return MTV;
 }
 void CreateGraphFromFunction(std::vector<Vertex>& verticesgraph,float c , int iterations, const char* filename, int start) {
 	for (int i = start; i <= iterations; ++i) {
@@ -408,26 +462,38 @@ int main()
 	Cube Cube2(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f);
 	std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 
-	// Generates Vertex Buffer Object and links it to spiral vertices
+	Cube Cube3(1.0f, glm::vec3(5.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f);
+	std::vector<GLfloat> flattenedCube3Vertices = Cube3.getFlattenedVertices();
+
+
+
+	// Generates Vertex Buffer Object and links it to cube
+	//should probably have this in the class but nah, not yet
 	VBO VBO_cube(flattenedCubeVertices.data(), flattenedCubeVertices.size() * sizeof(GLfloat));
 	VAO1.LinkAttrib(VBO_cube, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
 	VAO1.LinkAttrib(VBO_cube, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
 	VAO VAO2;
 	VAO2.Bind();
-	VBO VBO_Point(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
-	VAO2.LinkAttrib(VBO_Point, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-	VAO2.LinkAttrib(VBO_Point, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	VBO VBO_Cube2(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+	VAO2.LinkAttrib(VBO_Cube2, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+	VAO2.LinkAttrib(VBO_Cube2, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	
 	
-	
-	
+	VAO VAO3;
+	VAO3.Bind();
+	VBO VBO_Cube3(flattenedCube3Vertices.data(), flattenedCube3Vertices.size() * sizeof(GLfloat));
+	VAO3.LinkAttrib(VBO_Cube3, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+	VAO3.LinkAttrib(VBO_Cube3, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	// Unbind all to prevent accidentally modifying them
 	
 	VAO1.Unbind();
 	VBO_cube.Unbind();
 	VAO2.Unbind();
-	VBO_Point.Unbind();
+	VBO_Cube2.Unbind();
+	VAO3.Unbind();
+	VBO_Cube3.Unbind();
+
 	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 	float scaleValue = 100.0f;
 	
@@ -442,6 +508,7 @@ int main()
 	double prevFrameTime = 0.0f;
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	// Main while loop
+	float translationSpeed = 0.0005f;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -471,42 +538,120 @@ int main()
 		double deltaTime = currentFrameTime - prevFrameTime;
 		prevFrameTime = currentFrameTime;
 		
+		VAO3.Bind();
+		glDrawArrays(GL_TRIANGLES, 0, Cube3.mVertecies.size());
+		VAO3.Unbind();
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		{
-			float translationSpeed = 0.0005f;
-			Cube2.position.x += translationSpeed;
-			
-			Cube2.UpdateVertices(-0.05f,0.0f,0.0f);
-			std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
-			VBO_Point.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			float originalPosition = Cube2.position.x;
+
+			// Check if the new position will cause a collision
+			if (!Cube2.CheckCollision(Cube3))
+			{
+				Cube2.position.x = originalPosition;
+
+				// Update vertices and VBO
+				Cube2.UpdateVertices(-0.05f, 0.0f, 0.0f);
+				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			}
+			else
+			{
+				// Handle collision response (adjust position)
+				// You can use MTV or collision point information here
+				Cube2.position.x = CalculateMTV(Cube2, Cube3).x; /* Adjusted position based on collision information */;
+
+				// Update vertices and VBO
+				Cube2.UpdateVertices(-0.05f, 0.0f, 0.0f);
+				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			}
 		}
+
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		{
-			float translationSpeed = 0.0005f;
-			Cube2.position.x += translationSpeed;
+			float newPosition = Cube2.position.x + translationSpeed;
 
-			Cube2.UpdateVertices(0.05f, 0.0f, 0.0f);
-			std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
-			VBO_Point.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			// Check if the new position will cause a collision
+			if (!Cube2.CheckCollision(Cube3))
+			{
+				Cube2.position.x = newPosition;
+
+				// Update vertices and VBO
+				Cube2.UpdateVertices(0.05f, 0.0f, 0.0f);
+				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			}
+			else
+			{
+				// Calculate minimum translation vector (MTV) to separate cubes
+				glm::vec3 MTV = CalculateMTV(Cube2, Cube3);
+
+				// Move the cubes away from each other using the MTV
+				Cube2.position.x += MTV.x;
+				Cube2.UpdateVertices(0.05, 0.0f, 0.0f);
+				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			}
 		}
+
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		{
-			float translationSpeed = 0.0005f;
-			Cube2.position.z += translationSpeed;
+			float newPosition = Cube2.position.z - translationSpeed;
 
-			Cube2.UpdateVertices(0.0f, 0.0f, -0.05f);
-			std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
-			VBO_Point.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			// Check if the new position will cause a collision
+			if (!Cube2.CheckCollision(Cube3))
+			{
+				Cube2.position.z = newPosition;
+
+				// Update vertices and VBO
+				Cube2.UpdateVertices(0.0f, 0.0f, -0.05f);
+				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			}
+			else
+			{
+				// Calculate minimum translation vector (MTV) to separate cubes
+				glm::vec3 MTV = CalculateMTV(Cube2, Cube3);
+
+				// Move the cubes away from each other using the MTV
+				Cube2.position.z += MTV.z;
+				Cube2.UpdateVertices(0.0f, 0.0f, MTV.z);
+				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			}
 		}
+
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 		{
-			float translationSpeed = 0.0005f;
-			Cube2.position.z += translationSpeed;
+			float newPosition = Cube2.position.z + translationSpeed;
 
-			Cube2.UpdateVertices(0.0f, 0.0f, 0.05f);
-			std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
-			VBO_Point.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			// Check if the new position will cause a collision
+			if (!Cube2.CheckCollision(Cube3))
+			{
+				Cube2.position.z = newPosition;
+
+				// Update vertices and VBO
+				Cube2.UpdateVertices(0.0f, 0.0f, 0.05f);
+				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			}
+			else
+			{
+				// Calculate minimum translation vector (MTV) to separate cubes
+				glm::vec3 MTV = CalculateMTV(Cube2, Cube3);
+
+				// Move the cubes away from each other using the MTV
+				Cube2.position.z += MTV.z;
+				Cube2.UpdateVertices(0.0f, 0.0f, MTV.z);
+				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
+				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			}
 		}
+
+		
+
+		
 		// Unbind VAO to prevent accidentally modifying it
 		
 		
@@ -523,7 +668,9 @@ int main()
 	// Delete all the objects we've created
 	VAO1.Delete();
 	VAO2.Delete();
-	VBO_Point.Delete();
+	VAO3.Delete();
+	VBO_Cube2.Delete();
+	VBO_Cube3.Delete();
 	VBO_cube.Delete();
 	
 	shaderProgram.Delete();
