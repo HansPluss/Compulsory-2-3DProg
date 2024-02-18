@@ -111,12 +111,12 @@ public:
 		}
 		return flattenedVertices;
 	}
-	void UpdateVertices(float Xspeed,float Yspeed,float Zspeed) {
+	void UpdateVertices(float Xspeed,float Yspeed,float Zspeed, glm::vec3 velocity) {
 
 		for (Vertex& vertex : mVertecies) {
-			vertex.x +=  Xspeed;
-			vertex.y +=  Yspeed;
-			vertex.z +=  Zspeed;
+			vertex.x +=  Xspeed * velocity.x;
+			vertex.y +=  Yspeed * velocity.y;
+			vertex.z +=  Zspeed * velocity.z;
 		}
 		
 	}
@@ -509,6 +509,10 @@ int main()
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	// Main while loop
 	float translationSpeed = 0.0005f;
+	bool isColldingx = false;
+	bool isColldingNegativeX = false;
+	bool isColldingz = false;
+	bool isColldingNegativeZ = false;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -543,30 +547,27 @@ int main()
 		VAO3.Unbind();
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		{
-			float originalPosition = Cube2.position.x;
+			float newPosition = Cube2.position.x - translationSpeed;
 
 			// Check if the new position will cause a collision
-			if (!Cube2.CheckCollision(Cube3))
+			if (!Cube2.CheckCollision(Cube3) || isColldingx)
 			{
-				Cube2.position.x = originalPosition - translationSpeed;
+				Cube2.position.x = newPosition;
 
 				// Update vertices and VBO
-				Cube2.UpdateVertices(-0.05f, 0.0f, 0.0f);
+				glm::vec3 velocity(1, 0, 0);
+				Cube2.UpdateVertices(-0.05f, 0.0f, 0.0f, velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+				isColldingNegativeX = false;
+				isColldingx = false;
+				isColldingz = false;
+				isColldingNegativeZ = false;
 			}
-			else
-			{
-				// Handle collision response (adjust position)
-				// You can use MTV or collision point information here
-				Cube2.position.x -= CalculateMTV(Cube2, Cube3).x; /* Adjusted position based on collision information */;
-				printf(" Collided ");
-				// Update vertices and VBO
-				
-				Cube2.UpdateVertices(-0.08, 0.0f, 0.0f);
-				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
-				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			else {
+				isColldingNegativeX = true;
 			}
+			
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
@@ -574,26 +575,23 @@ int main()
 			float newPosition = Cube2.position.x + translationSpeed;
 
 			// Check if the new position will cause a collision
-			if (!Cube2.CheckCollision(Cube3))
+			if (!Cube2.CheckCollision(Cube3) || isColldingNegativeX)
 			{
 				Cube2.position.x = newPosition;
-
+				glm::vec3 velocity(1, 0, 0);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(0.05f, 0.0f, 0.0f);
+				Cube2.UpdateVertices(0.05f, 0.0f, 0.0f,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+				isColldingNegativeX = false;
+				isColldingx = false;
+				isColldingz = false;
+				isColldingNegativeZ = false;
 			}
-			else
-			{
-				// Calculate minimum translation vector (MTV) to separate cubes
-				glm::vec3 MTV = CalculateMTV(Cube2, Cube3);
-				printf(" Collided ");
-				// Move the cubes away from each other using the MTV
-				Cube2.position.x += MTV.x;
-				Cube2.UpdateVertices(0.00f, 0.0f, 0.0f);
-				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
-				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			else {
+				isColldingx = true;
 			}
+			
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
@@ -601,54 +599,47 @@ int main()
 			float newPosition = Cube2.position.z - translationSpeed;
 
 			// Check if the new position will cause a collision
-			if (!Cube2.CheckCollision(Cube3))
+			if (!Cube2.CheckCollision(Cube3) || isColldingz)
 			{
 				Cube2.position.z = newPosition;
-
+				glm::vec3 velocity(0, 0, 1);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(0.0f, 0.0f, -0.05f);
+				Cube2.UpdateVertices(0.0f, 0.0f, -0.05f,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+				isColldingNegativeX = false;
+				isColldingx = false;
+				isColldingz = false;
+				isColldingNegativeZ = false;
 			}
-			else
-			{
-				// Calculate minimum translation vector (MTV) to separate cubes
-				glm::vec3 MTV = CalculateMTV(Cube2, Cube3);
-
-				// Move the cubes away from each other using the MTV
-				Cube2.position.z -= MTV.z;
-				Cube2.UpdateVertices(0.00f, 0.0f, 0.0f);
-				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
-				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
-				
+			else {
+				isColldingNegativeZ = true;
 			}
+			
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 		{
 			float newPosition = Cube2.position.z + translationSpeed;
-
+			
 			// Check if the new position will cause a collision
-			if (!Cube2.CheckCollision(Cube3))
+			if (!Cube2.CheckCollision(Cube3) || isColldingNegativeZ)
 			{
 				Cube2.position.z = newPosition;
-
+				glm::vec3 velocity(0, 0, 1);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(0.0f, 0.0f, 0.05f);
+				Cube2.UpdateVertices(0.0f, 0.0f, 0.05f,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+				isColldingNegativeX = false;
+				isColldingx = false;
+				isColldingz = false;
+				isColldingNegativeZ = false;
 			}
-			else
-			{
-				// Calculate minimum translation vector (MTV) to separate cubes
-				glm::vec3 MTV = CalculateMTV(Cube2, Cube3);
-
-				// Move the cubes away from each other using the MTV
-				Cube2.position.z += MTV.z;
-				Cube2.UpdateVertices(0.00f, 0.0f,0.0f);
-				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
-				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
+			else {
+				isColldingz = true;
 			}
+			
 		}
 
 		
