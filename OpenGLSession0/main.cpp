@@ -29,19 +29,20 @@ public:
 	vector<Vertex> mVertecies;
 	glm::vec3 position;
 	float scaleX, scaleY, scaleZ;
+	float r, g, b;
 	std::string name;
 	glm::vec3 velocity;
 
-	Cube(float scale, const glm::vec3& initialPosition = glm::vec3(0.0f,0.0f,0.0f), float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f)
-		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ), velocity(glm::vec3(0.0f)) {
-		Vertex v0{ -a, -a, a , 1.0f, 0.0f, 0.0f };
-		Vertex v1{ a, -a, a , 0.0f, 1.0f, 0.0f };
-		Vertex v2{ a, a, a , 0.0f, 0.0f, 1.0f };
-		Vertex v3{ -a, a, a , 0.0f, 1.0f, 0.0f };
-		Vertex v4{ -a, -a, -a , 1.0f, 1.0f, 0.0f };
-		Vertex v5{ a, -a, -a , 0.0f, 1.0f, 0.0f };
-		Vertex v6{ a, a, -a , 0.0f, 1.0f, 1.0f };
-		Vertex v7{ -a, a, -a , 0.0f, 1.0f, 0.0f };
+	Cube(float scale, const glm::vec3& initialPosition = glm::vec3(0.0f,0.0f,0.0f), float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
+		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ), velocity(glm::vec3(0.0f)), r(red),g(green),b(blue) {
+		Vertex v0{ -a, -a, a , r, g, b };
+		Vertex v1{ a, -a, a , r, g, b };
+		Vertex v2{ a, a, a , r, g, b };
+		Vertex v3{ -a, a, a ,  r, g, b };
+		Vertex v4{ -a, -a, -a ,  r, g, b };
+		Vertex v5{ a, -a, -a ,  r, g, b };
+		Vertex v6{ a, a, -a ,  r, g, b };
+		Vertex v7{ -a, a, -a , r, g, b };
 
 
 		// Front face
@@ -134,13 +135,15 @@ public:
 					vertex.z * scaleZ + position.z) -
 					glm::vec3(otherVertex.x * otherCube.scaleX + otherCube.position.x,
 						otherVertex.y * otherCube.scaleY + otherCube.position.y,
-						otherVertex.z * otherCube.scaleZ + otherCube.position.z));
+						otherVertex.z * otherCube.scaleZ+ otherCube.position.z));
 
 				// Check if the distance is less than a threshold (adjust as needed)
-				if (distance < 0.5f) {
+				if (distance < 1.0f) {
 					// Collision detected
+					std::cout << "Collision Distance: " << distance << std::endl;
 					return true;
 				}
+				
 
 			}
 		}
@@ -452,20 +455,20 @@ int main()
 	}
 	
 
-	// Unbind to prevent accidentally modifying it
+	
 	
 
 	
 	Cube mahCube(1.5f,glm::vec3(0.0f,-10.0f,0.0f),10.0f,0.5f,10.0f);
 	std::vector<GLfloat> flattenedCubeVertices = mahCube.getFlattenedVertices();
 
-	Cube Cube2(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f);
+	Cube Cube2(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f, 0.0f,0.5f,0.0f);
 	std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 
-	Cube Cube3(1.0f, glm::vec3(5.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f);
+	Cube Cube3(1.0f, glm::vec3(0.0f, -8.0f, -12.0f), 14.0f, 1.0f, 1.0f,0.5f,0.0f,0.60f);
 	std::vector<GLfloat> flattenedCube3Vertices = Cube3.getFlattenedVertices();
 
-
+	
 
 	// Generates Vertex Buffer Object and links it to cube
 	//should probably have this in the class but nah, not yet
@@ -508,7 +511,7 @@ int main()
 	double prevFrameTime = 0.0f;
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 	// Main while loop
-	float translationSpeed = 0.0005f;
+	float translationSpeed = 0.0008f;
 	bool isColldingx = false;
 	bool isColldingNegativeX = false;
 	bool isColldingz = false;
@@ -545,6 +548,13 @@ int main()
 		VAO3.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, Cube3.mVertecies.size());
 		VAO3.Unbind();
+		if (isColldingNegativeX && isColldingNegativeZ && isColldingx && isColldingz) {
+			isColldingNegativeX = false;
+			isColldingx = false;
+			isColldingz = false;
+			isColldingNegativeZ = false;
+
+		}
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		{
 			float newPosition = Cube2.position.x - translationSpeed;
@@ -556,7 +566,7 @@ int main()
 
 				// Update vertices and VBO
 				glm::vec3 velocity(1, 0, 0);
-				Cube2.UpdateVertices(-0.05f, 0.0f, 0.0f, velocity);
+				Cube2.UpdateVertices(-translationSpeed, 0.0f, 0.0f, velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
 				isColldingNegativeX = false;
@@ -580,7 +590,7 @@ int main()
 				Cube2.position.x = newPosition;
 				glm::vec3 velocity(1, 0, 0);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(0.05f, 0.0f, 0.0f,velocity);
+				Cube2.UpdateVertices(translationSpeed, 0.0f, 0.0f,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
 				isColldingNegativeX = false;
@@ -604,7 +614,7 @@ int main()
 				Cube2.position.z = newPosition;
 				glm::vec3 velocity(0, 0, 1);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(0.0f, 0.0f, -0.05f,velocity);
+				Cube2.UpdateVertices(0.0f, 0.0f, -translationSpeed,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
 				isColldingNegativeX = false;
@@ -628,7 +638,7 @@ int main()
 				Cube2.position.z = newPosition;
 				glm::vec3 velocity(0, 0, 1);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(0.0f, 0.0f, 0.05f,velocity);
+				Cube2.UpdateVertices(0.0f, 0.0f, translationSpeed,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
 				isColldingNegativeX = false;
