@@ -1,6 +1,31 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGLSession0.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGLSession0.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Camera.cpp
   main.cpp
-C:\Users\hansm\OneDrive\Skrivebord\3DProg\Sessions\CompulsoryMath2\Compulsory-2-Math\OpenGLSession0\main.cpp(304,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\hansm\OneDrive\Skrivebord\3DProg\Sessions\CompulsoryMath2\Compulsory-2-Math\OpenGLSession0\main.cpp(305,19): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\hansm\OneDrive\Skrivebord\3DProg\Sessions\CompulsoryMath2\Compulsory-2-Math\OpenGLSession0\main.cpp(479,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  OpenGLSession0.vcxproj -> C:\Users\hansm\OneDrive\Skrivebord\3DProg\Sessions\CompulsoryMath2\Compulsory-2-Math\x64\Debug\Compulsory2Math.exe
+C:\Users\gardo\Documents\GitHub\Compulsory-2-3DProg\OpenGLSession0\main.cpp(345,56): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\gardo\Documents\GitHub\Compulsory-2-3DProg\OpenGLSession0\main.cpp(350,54): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\gardo\Documents\GitHub\Compulsory-2-3DProg\OpenGLSession0\main.cpp(360,54): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\gardo\Documents\GitHub\Compulsory-2-3DProg\OpenGLSession0\main.cpp(366,62): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\gardo\Documents\GitHub\Compulsory-2-3DProg\OpenGLSession0\main.cpp(372,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Users\gardo\Documents\GitHub\Compulsory-2-3DProg\OpenGLSession0\main.cpp(376,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  EBO.cpp
+  shaderClass.cpp
+  VAO.cpp
+C:\Users\gardo\Documents\GitHub\Compulsory-2-3DProg\OpenGLSession0\Resources\Shaders\VAO.cpp(13,63): warning C4244: 'argument': conversion from 'GLsizeiptr' to 'GLsizei', possible loss of data
+  VBO.cpp
+  Generating Code...
+  glad.c
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+main.obj : error LNK2019: unresolved external symbol "public: class std::vector<float,class std::allocator<float> > __cdecl Player::getFlattenedVertices(void)const " (?getFlattenedVertices@Player@@QEBA?AV?$vector@MV?$allocator@M@std@@@std@@XZ) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Player::ConstructVBO(class std::vector<float,class std::allocator<float> >,bool)" (?ConstructVBO@Player@@QEAAXV?$vector@MV?$allocator@M@std@@@std@@_N@Z) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Player::UnbindVAO(void)" (?UnbindVAO@Player@@QEAAXXZ) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Player::BindVAO(void)" (?BindVAO@Player@@QEAAXXZ) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Player::UpdateVertices(float,float,float,struct glm::vec<3,float,0>)" (?UpdateVertices@Player@@QEAAXMMMU?$vec@$02M$0A@@glm@@@Z) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Player::flattenVertices(void)" (?flattenVertices@Player@@QEAAXXZ) referenced in function "public: __cdecl Player::Player(float,struct glm::vec<3,float,0> const &,float,float,float,float,float,float)" (??0Player@@QEAA@MAEBU?$vec@$02M$0A@@glm@@MMMMMM@Z)
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Pokal::ConstructVBO(class std::vector<float,class std::allocator<float> >,bool)" (?ConstructVBO@Pokal@@QEAAXV?$vector@MV?$allocator@M@std@@@std@@_N@Z) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Pokal::UnbindVAO(void)" (?UnbindVAO@Pokal@@QEAAXXZ) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Pokal::BindVAO(void)" (?BindVAO@Pokal@@QEAAXXZ) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Pokal::UpdateVertices(float,float,float)" (?UpdateVertices@Pokal@@QEAAXMMM@Z) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: class std::vector<float,class std::allocator<float> > __cdecl Pokal::getFlattenedVertices(void)const " (?getFlattenedVertices@Pokal@@QEBA?AV?$vector@MV?$allocator@M@std@@@std@@XZ) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: bool __cdecl Pokal::CheckCollision(class Player const &)const " (?CheckCollision@Pokal@@QEBA_NAEBVPlayer@@@Z) referenced in function main
+main.obj : error LNK2019: unresolved external symbol "public: void __cdecl Pokal::flattenVertices(void)" (?flattenVertices@Pokal@@QEAAXXZ) referenced in function "public: __cdecl Pokal::Pokal(float,struct glm::vec<3,float,0> const &,float,float,float,float,float,float)" (??0Pokal@@QEAA@MAEBU?$vec@$02M$0A@@glm@@MMMMMM@Z)
+C:\Users\gardo\Documents\GitHub\Compulsory-2-3DProg\x64\Debug\Compulsory2Math.exe : fatal error LNK1120: 13 unresolved externals
