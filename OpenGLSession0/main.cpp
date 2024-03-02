@@ -285,7 +285,7 @@ int main()
 	}
 	for (int i = 0; i < 10; ++i) {
 
-		myPokaler[i].position.x += i + 4;
+		myPokaler[i].position.x += i * 2;
 		myPokaler[i].position.z += i + 4;
 		myPokaler[i].ConstructVBO(myPokaler[i].getFlattenedVertices(),false);
 		myPokaler[i].UpdateVertices(0, 0, 0);
@@ -384,12 +384,12 @@ int main()
 		}
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		{
-			float newPosition = Cube2.position.x - translationSpeed;
+			//float newPosition = Cube2.position.x - translationSpeed;
 			float newpos = myPlayer.position.x - translationSpeed;
 			// Check if the new position will cause a collision
-			if (!Cube2.CheckCollision(Cube3) || isColldingx)
+			if (!isColldingNegativeX)
 			{
-				Cube2.position.x = newPosition;
+				//Cube2.position.x = newPosition;
 				myPlayer.position.x = newpos;
 				
 
@@ -405,101 +405,121 @@ int main()
 				
 				//cout << myPlayer.position.x << "  ";
 				
-				Cube2.UpdateVertices(-translationSpeed, 0.0f, 0.0f, velocity);
+				//Cube2.UpdateVertices(-translationSpeed, 0.0f, 0.0f, velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
-				isColldingNegativeX = false;
-				isColldingx = false;
+				//isColldingNegativeX = false;
+				//isColldingx = false;
 				isColldingz = false;
 				isColldingNegativeZ = false;
 			}
 			else {
-				isColldingNegativeX = true;
+				//isColldingNegativeX = true;
 			}
 			
 		}
 		
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		{
-			float newPosition = Cube2.position.x + translationSpeed;
+			//float newPosition = Cube2.position.x + translationSpeed;
 			float newpos = myPlayer.position.x + translationSpeed;
 			// Check if the new position will cause a collision
-			if (!Cube2.CheckCollision(Cube3) || isColldingNegativeX)
+			if (!isColldingx)
 			{
-				Cube2.position.x = newPosition;
+				//Cube2.position.x = newPosition;
 				myPlayer.position.x = newpos;
 				glm::vec3 velocity(1, 0, 0);
 				myPlayer.UpdateVertices(translationSpeed, 0.0f, 0.0f, velocity);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(translationSpeed, 0.0f, 0.0f,velocity);
+				//Cube2.UpdateVertices(translationSpeed, 0.0f, 0.0f,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
-				isColldingNegativeX = false;
-				isColldingx = false;
+				//isColldingNegativeX = false;
+				//isColldingx = false;
 				isColldingz = false;
 				isColldingNegativeZ = false;
 			}
 			else {
-				isColldingx = true;
+				
 			}
 			
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		{
-			float newPosition = Cube2.position.z - translationSpeed;
+			//float newPosition = Cube2.position.z - translationSpeed;
 			float newpos = myPlayer.position.z - translationSpeed;
 			// Check if the new position will cause a collision
-			if (!Cube2.CheckCollision(Cube3) || isColldingz)
+			if (!isColldingNegativeZ)
 			{
-				Cube2.position.z = newPosition;
+				//Cube2.position.z = newPosition;
 				myPlayer.position.z = newpos;
 				glm::vec3 velocity(0, 0, 1);
 				myPlayer.UpdateVertices(0.0f, 0.0f, -translationSpeed, velocity);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(0.0f, 0.0f, -translationSpeed,velocity);
+				//Cube2.UpdateVertices(0.0f, 0.0f, -translationSpeed,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
-				isColldingNegativeX = false;
-				isColldingx = false;
-				isColldingz = false;
-				isColldingNegativeZ = false;
+				
 			}
-			else {
-				isColldingNegativeZ = true;
-			}
+			
 			
 		}
 
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 		{
-			float newPosition = Cube2.position.z + translationSpeed;
+			//float newPosition = Cube2.position.z + translationSpeed;
 			float newpos = myPlayer.position.z + translationSpeed;
 			// Check if the new position will cause a collision
-			if (!Cube2.CheckCollision(Cube3) || isColldingNegativeZ)
+			if (!isColldingz)
 			{
-				Cube2.position.z = newPosition;
+				//Cube2.position.z = newPosition;
 				myPlayer.position.z = newpos;
 				glm::vec3 velocity(0, 0, 1);
 				myPlayer.UpdateVertices(0.0f, 0.0f, translationSpeed, velocity);
 				// Update vertices and VBO
-				Cube2.UpdateVertices(0.0f, 0.0f, translationSpeed,velocity);
+				//Cube2.UpdateVertices(0.0f, 0.0f, translationSpeed,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
-				isColldingNegativeX = false;
-				isColldingx = false;
-				isColldingz = false;
-				isColldingNegativeZ = false;
-			}
-			else {
-				isColldingz = true;
+				
 			}
 			
+			
 		}
-		if (myPlayer.position.x < -10) {
-			printf("X pos");
+		if (myPlayer.position.x < -3) {
+			
+			isColldingNegativeX = true;
+			//isColldingx = false;
 			//camera.Position.x = Cube2.position.x; // for le door later
 		}
+		else {
+			isColldingNegativeX = false;
+		}
+		if (myPlayer.position.x > 11) {
+			isColldingx = true;
+			//isColldingNegativeX = false;
+		}
+		else {
+			isColldingx = false;
+		}
+		if (myPlayer.position.z < -6) {
+
+			isColldingNegativeZ = true;
+			//isColldingx = false;
+			//camera.Position.x = Cube2.position.x; // for le door later
+		}
+		else {
+			isColldingNegativeZ = false;
+		}
+		if (myPlayer.position.z > 7) {
+			isColldingz = true;
+			//isColldingNegativeX = false;
+		}
+		else {
+			isColldingz = false;
+		}
+
+
 		for (int i = 0; i < 10; ++i) {
 			if (myPokaler[i].CheckCollision(myPlayer)) {
 				// Collision detected between player and pokal[i]
