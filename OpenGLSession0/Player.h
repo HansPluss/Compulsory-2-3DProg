@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <cmath>
 
 using namespace std;
 struct PlayerVertex
@@ -15,6 +16,9 @@ struct PlayerVertex
 
 };
 class Player {
+private:
+
+
 public:
 	vector<PlayerVertex> mVertecies;
 	glm::vec3 position;
@@ -22,6 +26,15 @@ public:
 	float r, g, b;
 	std::string name;
 	glm::vec3 velocity;
+	float sphere_center_x = 0;
+	float sphere_center_y = 0;
+	float sphere_center_z = 0;
+	float sphere_radius = 0;
+	bool up = true;
+	bool down = true;
+	bool left = true;
+	bool right = true;
+
 	
 	VAO VAO5;
 	VBO VBO1;
@@ -91,6 +104,11 @@ public:
 		mVertecies.push_back(v5);
 		mVertecies.push_back(v1);
 
+		//collitionSphere
+		sphere_center_x = initialPosition.x;
+		sphere_center_y = initialPosition.y;
+		sphere_center_z = initialPosition.z;
+		sphere_radius = a; 
 
 
 		flattenVertices();
@@ -105,7 +123,10 @@ public:
 	VBO GetVBO();
 
 	
-	bool CheckCollision(const Player& otherCube) const;
+	bool CheckCollision(const Player& otherCube);
+	
+
+
 	void flattenVertices();
 
 public:

@@ -134,6 +134,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Pokal.cpp" />
     <ClCompile Include="Resources\Shaders\EBO.cpp" />
     <ClCompile Include="Resources\Shaders\shaderClass.cpp" />
     <ClCompile Include="Resources\Shaders\VAO.cpp" />
@@ -168,6 +170,8 @@
     <ClInclude Include="Dependencies\includes\glm\vec4.hpp" />
     <ClInclude Include="Dependencies\includes\glm\vector_relational.hpp" />
     <ClInclude Include="Dependencies\includes\KHR\khrplatform.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Pokal.h" />
     <ClInclude Include="Resources\Shaders\EBO.h" />
     <ClInclude Include="Resources\Shaders\shaderClass.h" />
     <ClInclude Include="Resources\Shaders\VAO.h" />

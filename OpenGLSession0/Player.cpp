@@ -51,9 +51,10 @@ void Player::UpdateVertices(float Xspeed, float Yspeed, float Zspeed, glm::vec3 
 	for (PlayerVertex& vertex : mVertecies) {
 		vertex.x += Xspeed * velocity.x;
 		vertex.y += Yspeed * velocity.y;
-		vertex.z += Zspeed * velocity.z;
-		
+		vertex.z += Zspeed * velocity.z;	
 	}
+	sphere_center_x = mVertecies[0].x + sphere_radius;
+	sphere_center_z = mVertecies[0].z - sphere_radius;
 	
 	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLfloat));
 }
@@ -62,6 +63,8 @@ VBO Player::GetVBO()
 {
 	return VBO1;
 }
+
+
 
 std::vector<GLfloat> Player::getFlattenedVertices() const
 {
@@ -78,8 +81,40 @@ std::vector<GLfloat> Player::getFlattenedVertices() const
 	return flattenedVertices;
 }
 
-bool Player::CheckCollision(const Player& otherCube) const
+bool Player::CheckCollision(const Player& otherCube)
 {
+	float distance_centers = std::sqrt(std::pow(sphere_center_x - otherCube.sphere_center_x, 2) +
+		std::pow(sphere_center_y - otherCube.sphere_center_y, 2) +
+		std::pow(sphere_center_z - otherCube.sphere_center_z, 2));
+
+	// If the distance between centers is less than the sum of the radii, collision occurs
+	if (distance_centers <= (sphere_radius + otherCube.sphere_radius)) {
+		// Collision detected
+		  // Collision detected
+		float dx = std::abs(sphere_center_x - otherCube.sphere_center_x);
+		float dy = std::abs(sphere_center_y - otherCube.sphere_center_y);
+		float dz = std::abs(sphere_center_z - otherCube.sphere_center_z);
+
+		if (dx > dz) {
+			if (sphere_center_x < otherCube.sphere_center_x) {
+				right = false;
+			}
+			else {
+
+				left = false;
+
+			}
+		}
+		else if (dy < dx && dy < dz) {
+			if (sphere_center_z < otherCube.sphere_center_z) {
+				down = false;
+			}
+			else {
+				up = false;
+			}
+		}
+	}
+
 	for (const PlayerVertex& vertex : mVertecies) {
 		// Iterate through each vertex in the other cube
 		for (const PlayerVertex& otherVertex : otherCube.mVertecies) {
@@ -96,6 +131,8 @@ bool Player::CheckCollision(const Player& otherCube) const
 			}
 
 			// Check if the distance is less than a threshold (adjust as needed)
+			
+			
 			if (distance < 1.0f) {
 				// Collision detected
 				//std::cout << "Collision Distance: " << distance << std::endl;

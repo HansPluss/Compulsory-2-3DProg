@@ -382,7 +382,7 @@ int main()
 			isColldingNegativeZ = false;
 
 		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && myPlayer.left)
 		{
 			//float newPosition = Cube2.position.x - translationSpeed;
 			float newpos = myPlayer.position.x - translationSpeed;
@@ -419,7 +419,7 @@ int main()
 			
 		}
 		
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && myPlayer.right)
 		{
 			//float newPosition = Cube2.position.x + translationSpeed;
 			float newpos = myPlayer.position.x + translationSpeed;
@@ -445,7 +445,7 @@ int main()
 			
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && myPlayer.up)
 		{
 			//float newPosition = Cube2.position.z - translationSpeed;
 			float newpos = myPlayer.position.z - translationSpeed;
@@ -466,7 +466,7 @@ int main()
 			
 		}
 
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && myPlayer.down)
 		{
 			//float newPosition = Cube2.position.z + translationSpeed;
 			float newpos = myPlayer.position.z + translationSpeed;

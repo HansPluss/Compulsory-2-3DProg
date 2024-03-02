@@ -24,6 +24,7 @@ public:
 	glm::vec3 velocity;
 	VAO VAO5;
 	VBO VBO1;
+
 	std::vector<GLfloat> flattenedVertices1;
 	Pokal(float scale, const glm::vec3& initialPosition = glm::vec3(0.0f, 0.0f, 0.0f), float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
 		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ), velocity(glm::vec3(0.0f)), r(red), g(green), b(blue) {
@@ -101,7 +102,7 @@ public:
 	void UpdateVertices(float Xspeed, float Yspeed, float Zspeed);
 	
 	std::vector<GLfloat> getFlattenedVertices() const;
-	bool CheckCollision(const Player& otherCube) const;
+	bool CheckCollision(const Player& otherCube);
 	void flattenVertices();
 	
 private:

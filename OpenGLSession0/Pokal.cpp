@@ -71,7 +71,7 @@ std::vector<GLfloat> Pokal::getFlattenedVertices() const
 	return flattenedVertices;
 }
 
-bool Pokal::CheckCollision(const Player& otherCube) const
+bool Pokal::CheckCollision(const Player& otherCube)
 {
 	// Iterate through each vertex in the current cube
 	for (const VertexPokal& vertex : mVertecies) {
