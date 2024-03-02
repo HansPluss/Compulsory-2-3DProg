@@ -297,6 +297,8 @@ int main()
 	Pokal HouseFloor(1.0f, glm::vec3(45.0f, -10.0f, 0.0f), 15.0f, 0.50f, 15.0f, 0.90f, 0.0f, 0.0f);
 	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);
 	HouseFloor.UpdateVertices(0,0,0);
+	Player door(1.0f, glm::vec3(0.0f, -8.0f, -10.0f), 1.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
+	door.ConstructVBO(door.getFlattenedVertices(), false);
 	// Unbind all to prevent accidentally modifying them
 	VAO1.Unbind();
 	VBO_cube.Unbind();
@@ -324,6 +326,7 @@ int main()
 	bool isColldingNegativeX = false;
 	bool isColldingz = false;
 	bool isColldingNegativeZ = false;
+	bool isInHouse = false;
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -375,6 +378,12 @@ int main()
 		HouseFloor.BindVAO();
 		glDrawArrays(GL_TRIANGLES, 0, HouseFloor.mVertecies.size());
 		HouseFloor.UnbindVAO();
+
+
+		door.BindVAO();
+		glDrawArrays(GL_LINE_STRIP, 0, door.mVertecies.size());
+		door.UnbindVAO();
+
 		if (isColldingNegativeX && isColldingNegativeZ && isColldingx && isColldingz) {
 			isColldingNegativeX = false;
 			isColldingx = false;
@@ -486,39 +495,45 @@ int main()
 			
 			
 		}
-		if (myPlayer.position.x < -3) {
-			
-			isColldingNegativeX = true;
-			//isColldingx = false;
-			//camera.Position.x = Cube2.position.x; // for le door later
-		}
-		else {
-			isColldingNegativeX = false;
-		}
-		if (myPlayer.position.x > 11) {
-			isColldingx = true;
-			//isColldingNegativeX = false;
-		}
-		else {
-			isColldingx = false;
-		}
-		if (myPlayer.position.z < -6) {
+		if (!isInHouse) {
+			if (myPlayer.position.x < -3) {
 
-			isColldingNegativeZ = true;
-			//isColldingx = false;
-			//camera.Position.x = Cube2.position.x; // for le door later
-		}
-		else {
-			isColldingNegativeZ = false;
-		}
-		if (myPlayer.position.z > 7) {
-			isColldingz = true;
-			//isColldingNegativeX = false;
-		}
-		else {
-			isColldingz = false;
-		}
+				isColldingNegativeX = true;
+				//isColldingx = false;
 
+			}
+			else {
+				isColldingNegativeX = false;
+			}
+			if (myPlayer.position.x > 11) {
+				isColldingx = true;
+				//isColldingNegativeX = false;
+			}
+			else {
+				isColldingx = false;
+			}
+			if (myPlayer.position.z < -6) {
+
+				isColldingNegativeZ = true;
+				//isColldingx = false;
+				//camera.Position.x = Cube2.position.x; // for le door later
+			}
+			else {
+				isColldingNegativeZ = false;
+			}
+			if (myPlayer.position.z > 7) {
+				isColldingz = true;
+				//isColldingNegativeX = false;
+			}
+			else {
+				isColldingz = false;
+			}
+
+		}
+		else {
+		
+		}
+		
 
 		for (int i = 0; i < 10; ++i) {
 			if (myPokaler[i].CheckCollision(myPlayer)) {
@@ -529,7 +544,13 @@ int main()
 				// Do something when a collision occurs, e.g., remove the pokal or decrease player health
 			}
 		}
-
+		if (door.CheckCollision(myPlayer)) {
+			cout << "Door" << endl;
+			myPlayer.position.x = 45;
+			myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
+			camera.Position.x = myPlayer.position.x; // for le door later
+			isInHouse = true;
+		}
 		
 		// Unbind VAO to prevent accidentally modifying it
 		

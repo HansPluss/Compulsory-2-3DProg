@@ -1,13 +1,10 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGLSession0.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGLSession0.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   main.cpp
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(345,56): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(350,54): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(360,54): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(366,62): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(372,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(376,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Player.cpp
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(86,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Pokal.cpp
-  Generating Code...
-  OpenGLSession0.vcxproj -> E:\Github\3DProg\Compulsory-2-3DProg\x64\Debug\Compulsory2Math.exe
+F:\OpenGLProjects\Compulsory-2-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(348,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+F:\OpenGLProjects\Compulsory-2-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(353,56): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+F:\OpenGLProjects\Compulsory-2-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(363,56): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+F:\OpenGLProjects\Compulsory-2-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(369,64): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+F:\OpenGLProjects\Compulsory-2-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(375,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+F:\OpenGLProjects\Compulsory-2-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(379,61): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+F:\OpenGLProjects\Compulsory-2-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(384,56): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  OpenGLSession0.vcxproj -> F:\OpenGLProjects\Compulsory-2-Prog\Compulsory-2-3DProg\x64\Debug\Compulsory2Math.exe
