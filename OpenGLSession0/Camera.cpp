@@ -86,7 +86,7 @@ void Camera::Inputs(GLFWwindow* window)
 		// and then "transforms" them into degrees 
 		float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
 		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
-
+		
 		// Calculates upcoming vertical change in the Orientation
 		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
 

@@ -14,6 +14,8 @@
 #include "Resources/Shaders/VBO.h"
 #include "Resources/Shaders/EBO.h"
 #include "Camera.h"
+#include "Pokal.h"
+#include "Player.h"
 
 
 const unsigned int width = 800;
@@ -33,6 +35,7 @@ public:
 	std::string name;
 	glm::vec3 velocity;
 
+	
 	Cube(float scale, const glm::vec3& initialPosition = glm::vec3(0.0f,0.0f,0.0f), float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
 		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ), velocity(glm::vec3(0.0f)), r(red),g(green),b(blue) {
 		Vertex v0{ -a, -a, a , r, g, b };
@@ -136,7 +139,11 @@ public:
 					glm::vec3(otherVertex.x * otherCube.scaleX + otherCube.position.x,
 						otherVertex.y * otherCube.scaleY + otherCube.position.y,
 						otherVertex.z * otherCube.scaleZ+ otherCube.position.z));
-
+				if (position.x + a * scaleX > otherCube.position.x - otherCube.a * otherCube.scaleX &&
+					otherCube.position.x + otherCube.a * otherCube.scaleX > position.x - a * scaleX) {
+					//std::cout << "Collision X " << std::endl;
+				}
+				
 				// Check if the distance is less than a threshold (adjust as needed)
 				if (distance < 1.0f) {
 					// Collision detected
@@ -151,6 +158,7 @@ public:
 		// No collision detected
 		return false;
 	}
+	
 	float GetA() {
 
 		return a;
@@ -170,130 +178,6 @@ private:
 	float a{ 1.0f };
 };
 
-
-struct Point {
-	float x, y, z;
-
-};
-
-void CreateCoordinateSystem(std::vector<Vertex>& vertices) {
-	// X-axis
-	vertices.push_back({ -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f });
-	vertices.push_back({ 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f });
-
-	// Y-axis
-	vertices.push_back({ 0.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f });
-	vertices.push_back({ 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f });
-
-	// Z-axis
-	vertices.push_back({ 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 1.0f });
-	vertices.push_back({ 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f });
-}
-void writeToFile(const char* fileName, double x, double y, double z, double r, double g, double b) {
-	std::ofstream outputFile(fileName, std::ios::app);  // Open the file in append mode
-	if (outputFile.is_open()) {
-		outputFile << std::fixed << std::setprecision(3);
-		outputFile << x << " , " << y << " , " << z << " , " << r << " , " << g << " , " << b;
-
-
-	}
-	else {
-		std::cerr << "Unable to open the output file for writing." << std::endl;
-	}
-	//if (y > 0) {
-	//	outputFile << " green";  // Use green for positive y
-	//}
-	//else if (y < 0) {
-	//	outputFile << " red";    // Use red for negative y
-	//}
-	//else {
-	//	outputFile << " white";  // Use white for y = 0
-	//}
-	outputFile << std::endl;
-	outputFile.close();
-}
-void Readfile(const char* fileName, std::vector<Vertex>& verticesSpiral) {
-	std::ifstream inputFile(fileName);
-	if (inputFile.is_open()) {
-
-
-		std::string line;
-		std::getline(inputFile, line);
-		Vertex vertex;
-		char comma; // to capture the commas in the file
-
-		while (inputFile >> vertex.x >> comma >> vertex.y >> comma >> vertex.z >> comma 
-			>> vertex.r >> comma >> vertex.g >> comma >> vertex.b) {
-			verticesSpiral.push_back(vertex);
-		}
-
-		inputFile.close();
-	}
-	else {
-		std::cerr << "Unable to open the input file for reading." << std::endl;
-	} 
-	
-	
-	
-}
-glm::vec4 CubicHermiteFunction(float inx0, float inx1, float iny0,float iny1, float derivativeY0, float derivativeY1) {
-	float x0, x1, y0, y1;
-	x0 = inx0;
-	x1 = inx1;
-	y0 = iny0;
-	y1 = iny1;
-
-	float derY0, derY1;
-	derY0 = derivativeY0;
-	derY1 = derivativeY1;
-
-	float func = powf(1, 1);
-	glm::mat<4, 4, float> A
-	    (powf(x0, 3), powf(x0, 2), x0, 1,
-		powf(x1, 3), powf(x1, 2), x1, 1,
-		powf(x0, 2), x0, 1, 0,
-		powf(x0, 2), x0, 1, 1);
-	
-	glm::vec4 y(y0, y1,derivativeY0,derivativeY1);
-
-	glm::mat4 inverseA = glm::inverse(A);
-
-	glm::vec4 x = y * inverseA;
-	return x;
-}
-glm::vec3 LeastSquareMethod() {
-#define G 5
-	glm::mat3x3 ATA(279, -5, -1,   // First column
-		-5, 368, 48,  // Second column
-		-1, 48, 8);
-	              
-	
-	
-	
-	
-	//compute A^T
-	
- // amount of points
-
-	//compute A^T * y
-	glm::vec3 ATy(-5,368,48);
-
-	//compute B^-1 or (A * A^T)^-1
-	glm::mat3 ATAInverse = glm::inverse(ATA);
-
-	
-	glm::vec3 x = ATAInverse * ATy;
-	/*std::cout << "ATy: " << ATy.x << ", " << ATy.y << ", " << ATy.z << std::endl;
-    std::cout << "ATAInverse: " << ATAInverse[0][0] << ", " << ATAInverse[0][1] << ", " << ATAInverse[0][2] << std::endl;
-    std::cout << "            " << ATAInverse[1][0] << ", " << ATAInverse[1][1] << ", " << ATAInverse[1][2] << std::endl;
-    std::cout << "            " << ATAInverse[2][0] << ", " << ATAInverse[2][1] << ", " << ATAInverse[2][2] << std::endl;*/
-
-    // compute x
-	
-	std::cout << " x: " << x.x << " y: " << x.y << " z: " << x.z << std::endl;
-	return x;
-
-}
 glm::vec3 CalculateMTV(const Cube& cube1, const Cube& cube2)
 {
 	// Calculate the vector from cube1 to cube2
@@ -316,42 +200,7 @@ glm::vec3 CalculateMTV(const Cube& cube1, const Cube& cube2)
 
 	return MTV;
 }
-void CreateGraphFromFunction(std::vector<Vertex>& verticesgraph,float c , int iterations, const char* filename, int start) {
-	for (int i = start; i <= iterations; ++i) {
-		float t = static_cast<float>(i);
-		float n = 0.05f;
-		float x = i * n;
-		float y = LeastSquareMethod().x * x * x + LeastSquareMethod().y * x + LeastSquareMethod().z;
-		float z = 0.0f;
-	
-		float df = 2*x;
-		
 
-		Vertex vertex;
-		vertex.x = x;
-		vertex.y = y;
-		vertex.z = z;
-		if (df < 0) {
-			vertex.r = 1.0f;
-			vertex.g = 0.0f;
-		}
-		else {
-			vertex.r = 0.0f;
-			vertex.g = 1.0f;
-		}
-		
-		vertex.b = std::abs(z) / (c * iterations);  // Adjust for coloring effect
-		/*vertex.pr = 0.0f;
-		vertex.pg = 0.0f;
-		vertex.pb = 1.0f;*/
-		verticesgraph.push_back(vertex);
-		writeToFile(filename, vertex.x, vertex.y, vertex.z,vertex.r, vertex.g, vertex.b);
-
-	}
-
-	
-
-}
 
 int main()
 {
@@ -366,7 +215,7 @@ int main()
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Create a GLFWwindow object of 800 by 800 pixels, naming it "OpenGL"
+	
 	GLFWwindow* window = glfwCreateWindow(width, height, "OpenGLProject", NULL, NULL);
 	// Error check if the window fails to create
 	if (window == NULL)
@@ -390,74 +239,11 @@ int main()
 	
 	glViewport(0, 0, width, height);
 
-	std::vector<Vertex> verticesGraph;
-	//Readfile("grahTwoVardata.txt", verticesGraph);
-	
-	
-	int iterations = 200;
-	int start = -200;
-
-	const int numRows = 3;
-	const int numCols = 4;
-
-	glm::mat<3, 4, float> A(-2, 2, 1,   
-		-5, 4, 1,  
-		-7, 7, 1,
-		-8, 11, 1
-	    );  
-
-	glm::mat<3, 4, float> B(4, 2, 1,
-		-2, -1, 1,
-		1, 1, 1,
-		0, 0, 0
-	);
-
-	std::vector<glm::vec3> points;
-	for (int i = 0; i < numCols; ++i) {
-		glm::vec3 point = glm::vec3(A[0][i], A[1][i], A[2][i]);
-		points.push_back(point);
-	}
-	std::vector<GLfloat> flattenedPoints;
-	for (const glm::vec3& point : points) {
-		flattenedPoints.push_back(point.x);
-		flattenedPoints.push_back(point.y);
-		flattenedPoints.push_back(point.z);
-		// Add color components if needed
-	}
-	
-	
-
-	
-	//FunctionWithTwoVariables(verticesGraph, iterations, outputFileGraphTwoVar);
-	//CreateGraphFromFunction(verticesGraph, c, iterations, outputFileGraphTwoVar, start);
-	//CreateCoordinateSystem(coordinateSystemVertices);
-	// Generates Shader object using shaders defualt.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
-	
-	
-	
-	
 
-	// Flatten the vector of Vertex into GLfloat
+	/*Pokal minPokal(1.0f, glm::vec3(0.0f, 4.0f, 0.0f), 1.0f, 1.0f, 1.0f, 0.0f, 0.5f, 1.0f);
+	std::vector<GLfloat> pokalVert = minPokal.getFlattenedVertices();*/
 	
-
-	// Generates Vertex Array Object and binds it
-	VAO VAO1;
-	VAO1.Bind();
-	std::vector<GLfloat> flattenedVertices;
-	for (const Vertex& vertex : verticesGraph) {
-		flattenedVertices.push_back(vertex.x);
-		flattenedVertices.push_back(vertex.y);
-		flattenedVertices.push_back(vertex.z);
-		flattenedVertices.push_back(vertex.r);
-		flattenedVertices.push_back(vertex.g);
-		flattenedVertices.push_back(vertex.b);
-	}
-	
-
-	
-	
-
 	
 	Cube mahCube(1.5f,glm::vec3(0.0f,-10.0f,0.0f),10.0f,0.5f,10.0f);
 	std::vector<GLfloat> flattenedCubeVertices = mahCube.getFlattenedVertices();
@@ -468,10 +254,10 @@ int main()
 	Cube Cube3(1.0f, glm::vec3(0.0f, -8.0f, -12.0f), 14.0f, 1.0f, 1.0f,0.5f,0.0f,0.60f);
 	std::vector<GLfloat> flattenedCube3Vertices = Cube3.getFlattenedVertices();
 
-	
-
 	// Generates Vertex Buffer Object and links it to cube
 	//should probably have this in the class but nah, not yet
+	VAO VAO1;
+	VAO1.Bind();
 	VBO VBO_cube(flattenedCubeVertices.data(), flattenedCubeVertices.size() * sizeof(GLfloat));
 	VAO1.LinkAttrib(VBO_cube, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
 	VAO1.LinkAttrib(VBO_cube, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -488,15 +274,37 @@ int main()
 	VBO VBO_Cube3(flattenedCube3Vertices.data(), flattenedCube3Vertices.size() * sizeof(GLfloat));
 	VAO3.LinkAttrib(VBO_Cube3, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
 	VAO3.LinkAttrib(VBO_Cube3, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	// Unbind all to prevent accidentally modifying them
 	
+	std::vector<Pokal> myPokaler;
+	
+	for (int i = 0; i < 10; ++i) {
+		Pokal pokal(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f, 0.1f, 0.0f, 0.10f);
+		myPokaler.push_back(pokal);
+
+
+	}
+	for (int i = 0; i < 10; ++i) {
+
+		myPokaler[i].position.x += i + 4;
+		myPokaler[i].position.z += i + 4;
+		myPokaler[i].ConstructVBO(myPokaler[i].getFlattenedVertices(),false);
+		myPokaler[i].UpdateVertices(0, 0, 0);
+	}
+	Player myPlayer(1.0f, glm::vec3(8.0f, -8.0f, 1.0f), 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f);
+	myPlayer.ConstructVBO(myPlayer.getFlattenedVertices(),false);
+	std::vector<GLfloat> playerVertices = myPlayer.getFlattenedVertices();
+
+	Pokal HouseFloor(1.0f, glm::vec3(45.0f, -10.0f, 0.0f), 15.0f, 0.50f, 15.0f, 0.90f, 0.0f, 0.0f);
+	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);
+	HouseFloor.UpdateVertices(0,0,0);
+	// Unbind all to prevent accidentally modifying them
 	VAO1.Unbind();
 	VBO_cube.Unbind();
 	VAO2.Unbind();
 	VBO_Cube2.Unbind();
 	VAO3.Unbind();
 	VBO_Cube3.Unbind();
-
+	
 	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 	float scaleValue = 100.0f;
 	
@@ -509,9 +317,9 @@ int main()
 
 	
 	double prevFrameTime = 0.0f;
-	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+	Camera camera(width, height, glm::vec3(0.0f, 38.0f, 15.0f));
 	// Main while loop
-	float translationSpeed = 0.0008f;
+	float translationSpeed = 0.05f;
 	bool isColldingx = false;
 	bool isColldingNegativeX = false;
 	bool isColldingz = false;
@@ -541,6 +349,9 @@ int main()
 		VAO2.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, Cube2.mVertecies.size());
 		VAO2.Unbind();
+
+		
+
 		double currentFrameTime = glfwGetTime();
 		double deltaTime = currentFrameTime - prevFrameTime;
 		prevFrameTime = currentFrameTime;
@@ -548,6 +359,22 @@ int main()
 		VAO3.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, Cube3.mVertecies.size());
 		VAO3.Unbind();
+		
+		
+		for (int i = 0; i < 10; ++i) {
+			myPokaler[i].BindVAO();
+			glDrawArrays(GL_TRIANGLES, 0, myPokaler[i].mVertecies.size());
+			myPokaler[i].UnbindVAO();
+		}
+
+
+		myPlayer.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, myPlayer.mVertecies.size());
+		myPlayer.UnbindVAO();
+
+		HouseFloor.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, HouseFloor.mVertecies.size());
+		HouseFloor.UnbindVAO();
 		if (isColldingNegativeX && isColldingNegativeZ && isColldingx && isColldingz) {
 			isColldingNegativeX = false;
 			isColldingx = false;
@@ -558,14 +385,26 @@ int main()
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		{
 			float newPosition = Cube2.position.x - translationSpeed;
-
+			float newpos = myPlayer.position.x - translationSpeed;
 			// Check if the new position will cause a collision
 			if (!Cube2.CheckCollision(Cube3) || isColldingx)
 			{
 				Cube2.position.x = newPosition;
+				myPlayer.position.x = newpos;
+				
+
+
 
 				// Update vertices and VBO
+				
 				glm::vec3 velocity(1, 0, 0);
+				
+				myPlayer.UpdateVertices(-translationSpeed, 0.0f, 0.0f, velocity);
+				
+				
+				
+				//cout << myPlayer.position.x << "  ";
+				
 				Cube2.UpdateVertices(-translationSpeed, 0.0f, 0.0f, velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
 				VBO_Cube2.UpdateData(flattenedCube2Vertices.data(), flattenedCube2Vertices.size() * sizeof(GLfloat));
@@ -579,16 +418,18 @@ int main()
 			}
 			
 		}
-
+		
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		{
 			float newPosition = Cube2.position.x + translationSpeed;
-
+			float newpos = myPlayer.position.x + translationSpeed;
 			// Check if the new position will cause a collision
 			if (!Cube2.CheckCollision(Cube3) || isColldingNegativeX)
 			{
 				Cube2.position.x = newPosition;
+				myPlayer.position.x = newpos;
 				glm::vec3 velocity(1, 0, 0);
+				myPlayer.UpdateVertices(translationSpeed, 0.0f, 0.0f, velocity);
 				// Update vertices and VBO
 				Cube2.UpdateVertices(translationSpeed, 0.0f, 0.0f,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
@@ -607,12 +448,14 @@ int main()
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
 		{
 			float newPosition = Cube2.position.z - translationSpeed;
-
+			float newpos = myPlayer.position.z - translationSpeed;
 			// Check if the new position will cause a collision
 			if (!Cube2.CheckCollision(Cube3) || isColldingz)
 			{
 				Cube2.position.z = newPosition;
+				myPlayer.position.z = newpos;
 				glm::vec3 velocity(0, 0, 1);
+				myPlayer.UpdateVertices(0.0f, 0.0f, -translationSpeed, velocity);
 				// Update vertices and VBO
 				Cube2.UpdateVertices(0.0f, 0.0f, -translationSpeed,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
@@ -631,12 +474,14 @@ int main()
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
 		{
 			float newPosition = Cube2.position.z + translationSpeed;
-			
+			float newpos = myPlayer.position.z + translationSpeed;
 			// Check if the new position will cause a collision
 			if (!Cube2.CheckCollision(Cube3) || isColldingNegativeZ)
 			{
 				Cube2.position.z = newPosition;
+				myPlayer.position.z = newpos;
 				glm::vec3 velocity(0, 0, 1);
+				myPlayer.UpdateVertices(0.0f, 0.0f, translationSpeed, velocity);
 				// Update vertices and VBO
 				Cube2.UpdateVertices(0.0f, 0.0f, translationSpeed,velocity);
 				std::vector<GLfloat> flattenedCube2Vertices = Cube2.getFlattenedVertices();
@@ -651,8 +496,19 @@ int main()
 			}
 			
 		}
-
-		
+		if (myPlayer.position.x < -10) {
+			printf("X pos");
+			//camera.Position.x = Cube2.position.x; // for le door later
+		}
+		for (int i = 0; i < 10; ++i) {
+			if (myPokaler[i].CheckCollision(myPlayer)) {
+				// Collision detected between player and pokal[i]
+				myPokaler[i].position.y += 10;
+				myPokaler[i].UpdateVertices(0, 10, 0);
+				std::cout << "Collision between Player and Pokal " << i << std::endl;
+				// Do something when a collision occurs, e.g., remove the pokal or decrease player health
+			}
+		}
 
 		
 		// Unbind VAO to prevent accidentally modifying it
@@ -672,6 +528,7 @@ int main()
 	VAO1.Delete();
 	VAO2.Delete();
 	VAO3.Delete();
+	myPlayer.VAO5.Delete();
 	VBO_Cube2.Delete();
 	VBO_Cube3.Delete();
 	VBO_cube.Delete();
