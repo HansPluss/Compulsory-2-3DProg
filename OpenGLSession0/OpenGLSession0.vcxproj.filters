@@ -48,6 +48,9 @@
     <ClCompile Include="Table.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LSM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\includes\glad\glad.h">
@@ -153,6 +156,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LSM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

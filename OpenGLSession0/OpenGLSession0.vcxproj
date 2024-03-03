@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="LSM.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pokal.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Dependencies\includes\glm\vec4.hpp" />
     <ClInclude Include="Dependencies\includes\glm\vector_relational.hpp" />
     <ClInclude Include="Dependencies\includes\KHR\khrplatform.h" />
+    <ClInclude Include="LSM.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Pokal.h" />
     <ClInclude Include="Resources\Shaders\EBO.h" />
