@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <cmath>
+#include "Table.h"
 
 using namespace std;
 struct PlayerVertex
@@ -125,6 +126,7 @@ public:
 	void Patrol(std::vector<double> coefficients);
 	
 	bool CheckCollision(const Player& otherCube);
+	void TableCollision(const Table& otherCube);
 	
 
 

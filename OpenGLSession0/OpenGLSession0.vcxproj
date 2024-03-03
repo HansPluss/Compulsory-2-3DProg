@@ -140,6 +140,7 @@
     <ClCompile Include="Resources\Shaders\shaderClass.cpp" />
     <ClCompile Include="Resources\Shaders\VAO.cpp" />
     <ClCompile Include="Resources\Shaders\VBO.cpp" />
+    <ClCompile Include="Table.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Resources\Shaders\shaderClass.h" />
     <ClInclude Include="Resources\Shaders\VAO.h" />
     <ClInclude Include="Resources\Shaders\VBO.h" />
+    <ClInclude Include="Table.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="default.frag" />
