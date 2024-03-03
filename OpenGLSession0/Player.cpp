@@ -147,6 +147,42 @@ bool Player::CheckCollision(const Player& otherCube)
 	return false;
 }
 
+void Player::TableCollision(const Table& otherCube)
+{
+	float distance_centers = std::sqrt(std::pow(sphere_center_x - otherCube.sphere_center_x, 2) +
+		std::pow(sphere_center_y - otherCube.sphere_center_y, 2) +
+		std::pow(sphere_center_z - otherCube.sphere_center_z, 2));
+
+	// If the distance between centers is less than the sum of the radii, collision occurs
+	if (distance_centers <= (sphere_radius + otherCube.sphere_radius)) {
+		// Collision detected
+		  // Collision detected
+		float dx = std::abs(sphere_center_x - otherCube.sphere_center_x);
+		float dy = std::abs(sphere_center_y - otherCube.sphere_center_y);
+		float dz = std::abs(sphere_center_z - otherCube.sphere_center_z);
+
+		if (dx > dz) {
+			if (sphere_center_x < otherCube.sphere_center_x) {
+				right = false;
+			}
+			else {
+
+				left = false;
+
+			}
+		}
+		else if (dy < dx && dy < dz) {
+			if (sphere_center_z < otherCube.sphere_center_z) {
+				down = false;
+			}
+			else {
+				up = false;
+			}
+		}
+	}
+	
+}
+
 void Player::flattenVertices()
 {
 	std::vector<GLfloat> flattenedVertices;
