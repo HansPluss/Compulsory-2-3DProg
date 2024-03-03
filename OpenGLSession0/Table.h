@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
-#include<GLFW/glfw3.h>
 #include "Resources/Shaders/VBO.h"
 #include "Resources/Shaders/VAO.h"
 class Table

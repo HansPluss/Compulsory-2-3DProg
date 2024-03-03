@@ -288,7 +288,7 @@ int main()
 	int maxPokals = 8;
 	int score = 0;
 	for (int i = 0; i < maxPokals; ++i) {
-		Pokal pokal(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 0.90f, 0.75f, 1.0f, 0.0f);
+		Pokal pokal(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.f, 0.75f, 1.0f, 0.0f);
 		myPokaler.push_back(pokal);
 
 
@@ -517,38 +517,38 @@ int main()
 			
 		}
 		if (!isInHouse) {
-			if (myPlayer.position.x < -3) {
+			//if (myPlayer.position.x < -3) {
 
-				isColldingNegativeX = true;
-				//isColldingx = false;
+			//	isColldingNegativeX = true;
+			//	//isColldingx = false;
 
-			}
-			else {
-				isColldingNegativeX = false;
-			}
-			if (myPlayer.position.x > 11) {
-				isColldingx = true;
-				//isColldingNegativeX = false;
-			}
-			else {
-				isColldingx = false;
-			}
-			if (myPlayer.position.z < -6) {
+			//}
+			//else {
+			//	isColldingNegativeX = false;
+			//}
+			//if (myPlayer.position.x > 11) {
+			//	isColldingx = true;
+			//	//isColldingNegativeX = false;
+			//}
+			//else {
+			//	isColldingx = false;
+			//}
+			//if (myPlayer.position.z < -6) {
 
-				isColldingNegativeZ = true;
-				//isColldingx = false;
-				//camera.Position.x = Cube2.position.x; // for le door later
-			}
-			else {
-				isColldingNegativeZ = false;
-			}
-			if (myPlayer.position.z > 7) {
-				isColldingz = true;
-				//isColldingNegativeX = false;
-			}
-			else {
-				isColldingz = false;
-			}
+			//	isColldingNegativeZ = true;
+			//	//isColldingx = false;
+			//	//camera.Position.x = Cube2.position.x; // for le door later
+			//}
+			//else {
+			//	isColldingNegativeZ = false;
+			//}
+			//if (myPlayer.position.z > 7) {
+			//	isColldingz = true;
+			//	//isColldingNegativeX = false;
+			//}
+			//else {
+			//	isColldingz = false;
+			//}
 
 		}
 		else {
@@ -557,10 +557,12 @@ int main()
 		
 
 		for (int i = 0; i < maxPokals; ++i) {
-			if (myPokaler[i].CheckCollision(myPlayer)) {
+			if (myPokaler[i].CheckCollision(myPlayer) /*|| myPlayer.PokalCollision(myPokaler[i])*/) {
 				// Collision detected between player and pokal[i]
 				myPokaler[i].position.y += 10;
 				myPokaler[i].position.z = -6;
+				myPokaler[i].sphere_center_y += 10;
+				myPokaler[i].sphere_center_z = -6;
 				myPokaler[i].UpdateVertices(0, 10, 0);
 				score++;
 				std::cout << "Current Score: " << score << std::endl;

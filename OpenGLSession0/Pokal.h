@@ -8,6 +8,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Player.h"
 
+class Player;
+
+
 using namespace std;
 struct VertexPokal
 {
@@ -20,6 +23,10 @@ public:
 	glm::vec3 position;
 	float scaleX, scaleY, scaleZ;
 	float r, g, b;
+	float sphere_center_x = 0;
+	float sphere_center_y = 0;
+	float sphere_center_z = 0;
+	float sphere_radius = 0;
 	std::string name;
 	glm::vec3 velocity;
 	VAO VAO5;
@@ -89,6 +96,10 @@ public:
 		mVertecies.push_back(v5);
 		mVertecies.push_back(v1);
 
+		sphere_center_x = initialPosition.x;
+		sphere_center_y = initialPosition.y;
+		sphere_center_z = initialPosition.z;
+		sphere_radius = 1.f;
 
 
 		flattenVertices();

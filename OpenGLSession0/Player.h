@@ -8,6 +8,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <cmath>
 #include "Table.h"
+#include "Pokal.h"
+
+class Pokal;
+
 
 using namespace std;
 struct PlayerVertex
@@ -126,6 +130,7 @@ public:
 	
 	bool CheckCollision(const Player& otherCube);
 	void TableCollision(const Table& otherCube);
+	bool PokalCollision(Pokal& otherCube);
 	
 
 
