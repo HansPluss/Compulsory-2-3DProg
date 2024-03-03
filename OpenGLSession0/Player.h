@@ -16,7 +16,7 @@ class Pokal;
 using namespace std;
 struct PlayerVertex
 {
-	float x, y, z;
+	double x, y, z;
 	float r, g, b;
 
 };
@@ -127,6 +127,7 @@ public:
 	void UpdateVertices(float Xspeed, float Yspeed, float Zspeed, glm::vec3 velocity);
 	VBO GetVBO();
 
+	void Patrol(std::vector<double> coefficients);
 	
 	bool CheckCollision(const Player& otherCube);
 	void TableCollision(const Table& otherCube);
@@ -138,7 +139,9 @@ public:
 
 public:
 	float a{ 1.0f };
-
+	double xvalue = 0;
+	double xspeed = 0.001;
+	bool xPositiveDir = true;
 
 
 };
