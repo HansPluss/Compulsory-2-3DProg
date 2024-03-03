@@ -8,6 +8,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <cstdlib> 
+#include <ctime> 
+
 
 #include "Resources/Shaders/shaderClass.h"
 #include "Resources/Shaders/VAO.h"
@@ -16,6 +19,7 @@
 #include "Camera.h"
 #include "Pokal.h"
 #include "Player.h"
+
 
 
 const unsigned int width = 800;
@@ -276,29 +280,43 @@ int main()
 	VAO3.LinkAttrib(VBO_Cube3, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	
 	std::vector<Pokal> myPokaler;
-	
-	for (int i = 0; i < 10; ++i) {
-		Pokal pokal(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f, 0.1f, 0.0f, 0.10f);
+	std::srand(static_cast<unsigned>(std::time(nullptr)));
+	float maxX = 14;
+	float minX = -14;
+	float maxZ = 14;
+	float minZ = -14;
+	int maxPokals = 8;
+	int score = 0;
+	for (int i = 0; i < maxPokals; ++i) {
+		Pokal pokal(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 0.90f, 0.75f, 1.0f, 0.0f);
 		myPokaler.push_back(pokal);
 
 
 	}
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < maxPokals; ++i) {
 
-		myPokaler[i].position.x += i * 2;
-		myPokaler[i].position.z += i + 4;
+		float randomX = static_cast<float>(std::rand()) / RAND_MAX * (maxX - minX) + minX;
+		float randomZ = static_cast<float>(std::rand()) / RAND_MAX * (maxZ - minZ) + minZ;
+
+		myPokaler[i].position.x = randomX;
+		myPokaler[i].position.z = randomZ;
 		myPokaler[i].ConstructVBO(myPokaler[i].getFlattenedVertices(),false);
 		myPokaler[i].UpdateVertices(0, 0, 0);
 	}
-	Player myPlayer(1.0f, glm::vec3(8.0f, -8.0f, 1.0f), 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f);
+	Player myPlayer(1.0f, glm::vec3(8.0f, -8.0f, 1.0f), 1.0f, 1.0f, 1.0f, 0.10f, 0.0f, 0.50f);
 	myPlayer.ConstructVBO(myPlayer.getFlattenedVertices(),false);
 	std::vector<GLfloat> playerVertices = myPlayer.getFlattenedVertices();
 
-	Pokal HouseFloor(1.0f, glm::vec3(45.0f, -10.0f, 0.0f), 15.0f, 0.50f, 15.0f, 0.90f, 0.0f, 0.0f);
+	Pokal HouseFloor(1.0f, glm::vec3(45.0f, -10.0f, 0.0f), 15.0f, 0.50f, 15.0f, 0.10f, 0.0f, 0.0f);
 	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);
 	HouseFloor.UpdateVertices(0,0,0);
-	Player door(1.0f, glm::vec3(0.0f, -8.0f, -10.0f), 1.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
+	Player door(1.0f, glm::vec3(0.0f, -8.0f, -12.0f), 2.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
 	door.ConstructVBO(door.getFlattenedVertices(), false);
+
+	Player roomDoor(1.0f, glm::vec3(45.0f, -8.0f, -14.0f), 2.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
+	roomDoor.ConstructVBO(roomDoor.getFlattenedVertices(), false);
+
+
 	// Unbind all to prevent accidentally modifying them
 	VAO1.Unbind();
 	VBO_cube.Unbind();
@@ -359,12 +377,10 @@ int main()
 		double deltaTime = currentFrameTime - prevFrameTime;
 		prevFrameTime = currentFrameTime;
 		
-		VAO3.Bind();
-		glDrawArrays(GL_TRIANGLES, 0, Cube3.mVertecies.size());
-		VAO3.Unbind();
 		
 		
-		for (int i = 0; i < 10; ++i) {
+		
+		for (int i = 0; i < maxPokals; ++i) {
 			myPokaler[i].BindVAO();
 			glDrawArrays(GL_TRIANGLES, 0, myPokaler[i].mVertecies.size());
 			myPokaler[i].UnbindVAO();
@@ -381,8 +397,13 @@ int main()
 
 
 		door.BindVAO();
-		glDrawArrays(GL_LINE_STRIP, 0, door.mVertecies.size());
+		glDrawArrays(GL_TRIANGLES, 0, door.mVertecies.size());
 		door.UnbindVAO();
+
+		roomDoor.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, roomDoor.mVertecies.size());
+		roomDoor.UnbindVAO();
+
 
 		if (isColldingNegativeX && isColldingNegativeZ && isColldingx && isColldingz) {
 			isColldingNegativeX = false;
@@ -535,12 +556,14 @@ int main()
 		}
 		
 
-		for (int i = 0; i < 10; ++i) {
+		for (int i = 0; i < maxPokals; ++i) {
 			if (myPokaler[i].CheckCollision(myPlayer)) {
 				// Collision detected between player and pokal[i]
 				myPokaler[i].position.y += 10;
+				myPokaler[i].position.z = -6;
 				myPokaler[i].UpdateVertices(0, 10, 0);
-				std::cout << "Collision between Player and Pokal " << i << std::endl;
+				score++;
+				std::cout << "Current Score: " << score << std::endl;
 				// Do something when a collision occurs, e.g., remove the pokal or decrease player health
 			}
 		}
@@ -551,7 +574,14 @@ int main()
 			camera.Position.x = myPlayer.position.x; // for le door later
 			isInHouse = true;
 		}
-		
+		if (roomDoor.CheckCollision(myPlayer)) {
+
+			myPlayer.position.x = 0;
+			myPlayer.position.z = 8;
+			myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
+			camera.Position.x = myPlayer.position.x;
+			isInHouse = false;
+		}
 		// Unbind VAO to prevent accidentally modifying it
 		
 		
