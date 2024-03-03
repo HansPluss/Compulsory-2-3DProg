@@ -56,7 +56,7 @@ void Player::UpdateVertices(float Xspeed, float Yspeed, float Zspeed, glm::vec3 
 	sphere_center_x = mVertecies[0].x + sphere_radius;
 	sphere_center_z = mVertecies[0].z - sphere_radius;
 	
-	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLfloat));
+	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
 }
 
 VBO Player::GetVBO()
@@ -146,6 +146,60 @@ bool Player::CheckCollision(const Player& otherCube)
 	// No collision detected
 	return false;
 }
+
+
+
+
+std::vector<double> computeDerivative(const std::vector<double>& coefficients) {
+	std::vector<double> derivativeCoefficients;
+
+	// Compute derivative coefficients
+	for (size_t i = 1; i < coefficients.size(); ++i) {
+		derivativeCoefficients.push_back(i * coefficients[i]);
+	}
+
+	return derivativeCoefficients;
+}
+
+double evaluatePolynomial(const std::vector<double>& coefficients, double x) {
+	double result = 0.0;
+	double power = 1.0;
+	for (size_t i = 0; i < coefficients.size(); ++i) {
+		result += coefficients[i] * power;
+		power *= x;
+	}
+	return result;
+}
+
+double computeDerivativeAtPoint(const std::vector<double>& coefficients, double x) {
+	std::vector<double> derivativeCoefficients = computeDerivative(coefficients);
+	return evaluatePolynomial(derivativeCoefficients, x);
+}
+
+
+void Player::Patrol(std::vector<double> coefficients)
+{
+	double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
+	for (PlayerVertex& vertex : mVertecies) {
+		vertex.x += xspeed*20;
+		vertex.y += 0;
+		if (xPositiveDir) vertex.z += Derivative;
+		else vertex.z -= Derivative;
+	}
+	xvalue += xspeed;
+	if (xvalue >= 1) {
+		xspeed *= -1; 
+		xPositiveDir = false;
+	}
+	else if (xvalue <= -0.25) {
+		xspeed *= -1;
+		xPositiveDir = true;
+	}
+	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
+}
+
+
+
 
 void Player::flattenVertices()
 {
