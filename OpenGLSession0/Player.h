@@ -40,6 +40,7 @@ std::array<Vertex, 36> mVertecies;
 	bool down = true;
 	bool left = true;
 	bool right = true;
+	bool move = true; 
 
 	
 	VAO VAO5;
@@ -53,9 +54,9 @@ std::array<Vertex, 36> mVertecies;
 		Construct con; 
 
 		//Cube
-		//mVertecies = con.Cube(initialPosition, glm::vec3(scaleX, scaleY, scaleZ), glm::vec3(red, green, blue)); 
+		mVertecies = con.Cube(initialPosition, glm::vec3(scaleX, scaleY, scaleZ), glm::vec3(red, green, blue)); 
 		//Table
-		mVertecies = con.Table(a, initialPosition, glm::vec3(red, green, blue));
+		//mVertecies = con.Table(a, initialPosition, glm::vec3(red, green, blue));
 
 		//collitionSphere
 		sphere_center_x = initialPosition.x;
@@ -77,7 +78,7 @@ std::array<Vertex, 36> mVertecies;
 
 	void Patrol(std::vector<double> coefficients);
 	
-	bool CheckCollision(const Player& otherCube);
+	bool CheckCollision( Player& otherCube);
 	void TableCollision(const Table& otherCube);
 	bool PokalCollision(Pokal& otherCube);
 	

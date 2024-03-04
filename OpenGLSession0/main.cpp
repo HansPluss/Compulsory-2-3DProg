@@ -20,6 +20,7 @@
 #include "Pokal.h"
 #include "Player.h"
 #include "LSM.h"
+#include "SphereCollition.h"
 
 
 
@@ -143,6 +144,8 @@ int main()
 	std::vector<double> patrolPoints = { -1 , 2, -0.5, 0.25, 0, 0 }; // points for patrolling
 	LSM PatrolPath(patrolPoints, patrolPoints.size() / 2); // the degree of the function, f.exa x^2
 
+	SphereCollition sc(myPlayer, NPC);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -159,6 +162,7 @@ int main()
 
 		//NPC
 		NPC.Patrol(PatrolPath.getCoefficients());
+		/*sc;*/
 
 
 		glUniform1f(uniID, scaleValue);
@@ -330,11 +334,15 @@ int main()
 				// Do something when a collision occurs, e.g., remove the pokal or decrease player health
 			}
 		}
-		if (door.CheckCollision(myPlayer)) {
+		if (myPlayer.CheckCollision(door)) {
 			cout << "Door" << endl;
 			myPlayer.position.x = 45;
 			myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
 			camera.Position.x = myPlayer.position.x; // for le door later
+			myPlayer.sphere_center_x = myPlayer.position.x;
+			myPlayer.sphere_center_z = myPlayer.position.z;
+			door.sphere_center_x = door.position.x;
+			door.sphere_center_z = door.position.z;
 			isInHouse = true;
 		}
 		if (roomDoor.CheckCollision(myPlayer)) {
@@ -343,6 +351,10 @@ int main()
 			myPlayer.position.z = 8;
 			myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
 			camera.Position.x = myPlayer.position.x;
+			myPlayer.sphere_center_x = myPlayer.position.x;
+			myPlayer.sphere_center_z = myPlayer.position.z;
+			roomDoor.sphere_center_x = roomDoor.position.x;
+			roomDoor.sphere_center_z = roomDoor.position.z;
 			isInHouse = false;
 		}
 		

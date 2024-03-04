@@ -53,8 +53,8 @@ void Player::UpdateVertices(float Xspeed, float Yspeed, float Zspeed, glm::vec3 
 		vertex.y += Yspeed * velocity.y;
 		vertex.z += Zspeed * velocity.z;	
 	}
-	sphere_center_x = mVertecies[0].x + sphere_radius;
-	sphere_center_z = mVertecies[0].z - sphere_radius;
+	sphere_center_x = position.x;
+	sphere_center_z = position.z;
 	
 	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
 }
@@ -81,19 +81,20 @@ std::vector<GLfloat> Player::getFlattenedVertices() const
 	return flattenedVertices;
 }
 
-bool Player::CheckCollision(const Player& otherCube)
+bool Player::CheckCollision( Player& otherCube)
 {
 	float distance_centers = std::sqrt(std::pow(sphere_center_x - otherCube.sphere_center_x, 2) +
 		std::pow(sphere_center_y - otherCube.sphere_center_y, 2) +
 		std::pow(sphere_center_z - otherCube.sphere_center_z, 2));
+	float dx = std::abs(sphere_center_x - otherCube.sphere_center_x);
+	float dy = std::abs(sphere_center_y - otherCube.sphere_center_y);
+	float dz = std::abs(sphere_center_z - otherCube.sphere_center_z);
 
 	// If the distance between centers is less than the sum of the radii, collision occurs
 	if (distance_centers <= (sphere_radius + otherCube.sphere_radius)) {
 		// Collision detected
 		  // Collision detected
-		float dx = std::abs(sphere_center_x - otherCube.sphere_center_x);
-		float dy = std::abs(sphere_center_y - otherCube.sphere_center_y);
-		float dz = std::abs(sphere_center_z - otherCube.sphere_center_z);
+
 
 		if (dx > dz) {
 			if (sphere_center_x < otherCube.sphere_center_x) {
@@ -113,6 +114,16 @@ bool Player::CheckCollision(const Player& otherCube)
 				up = false;
 			}
 		}
+		otherCube.move = false;
+
+	}
+	else {
+		up = true;
+		down = true;
+		left = true;
+		right = true;
+		otherCube.move = true;
+		std::cout << "X " << dx << "Y " << dy << "Z " << dz << "\n";
 	}
 
 	for (const Vertex& vertex : mVertecies) {
@@ -179,23 +190,28 @@ double computeDerivativeAtPoint(const std::vector<double>& coefficients, double 
 
 void Player::Patrol(std::vector<double> coefficients)
 {
-	double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
-	for (Vertex& vertex : mVertecies) {
-		vertex.x += xspeed*20;
-		vertex.y += 0;
-		if (xPositiveDir) vertex.z += Derivative;
-		else vertex.z -= Derivative;
+	if(move)
+	{
+		double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
+		for (Vertex& vertex : mVertecies) {
+			vertex.x += xspeed * 20;
+			vertex.y += 0;
+			if (xPositiveDir) vertex.z += Derivative;
+			else vertex.z -= Derivative;
+		}
+		xvalue += xspeed;
+		if (xvalue >= 1) {
+			xspeed *= -1;
+			xPositiveDir = false;
+		}
+		else if (xvalue <= -0.25) {
+			xspeed *= -1;
+			xPositiveDir = true;
+		}
+		sphere_center_x = position.x;
+		sphere_center_z = position.z;
+		VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
 	}
-	xvalue += xspeed;
-	if (xvalue >= 1) {
-		xspeed *= -1; 
-		xPositiveDir = false;
-	}
-	else if (xvalue <= -0.25) {
-		xspeed *= -1;
-		xPositiveDir = true;
-	}
-	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
 }
 
 
@@ -234,6 +250,7 @@ void Player::TableCollision(const Table& otherCube)
 			}
 		}
 	}
+	std::cout << distance_centers << "\n";
 	
 }
 
