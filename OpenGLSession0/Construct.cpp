@@ -57,10 +57,10 @@ std::array<Vertex, 36> Construct::Table(float size, glm::vec3 cordinates, glm::v
     Vertex v6{ size, size, -size ,  Color.x, Color.y, Color.z };
     Vertex v7{ -size, size, -size , Color.x, Color.y, Color.z };
 
-    Vertex v8{ cordinates.x - (3 * size), cordinates.y + size, cordinates.z + (4 * size) , Color.x, Color.y, Color.z };
-    Vertex v9{ cordinates.x + (3 * size), cordinates.y + size, cordinates.z + (4 * size) , Color.x, Color.y, Color.z };
-    Vertex v10{ cordinates.x - (3 * size), cordinates.y + size, cordinates.z - (4 * size), Color.x, Color.y, Color.z };
-    Vertex v11{ cordinates.x + (3 * size), cordinates.y + size, cordinates.z - (4 * size) , Color.x, Color.y, Color.z };
+    Vertex v8{ cordinates.x - (3 * size) - cordinates.x,  size, cordinates.z + (4 * size) , Color.x, Color.y, Color.z};
+    Vertex v9{ cordinates.x + (3 * size) - cordinates.x,  size, cordinates.z + (4 * size) , Color.x, Color.y, Color.z };
+    Vertex v10{ cordinates.x - (3 * size) - cordinates.x,  size, cordinates.z - (4 * size), Color.x, Color.y, Color.z };
+    Vertex v11{ cordinates.x + (3 * size) - cordinates.x,  size, cordinates.z - (4 * size) , Color.x, Color.y, Color.z };
 
     TableArray = {
         // Front face
