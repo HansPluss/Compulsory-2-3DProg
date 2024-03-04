@@ -29,7 +29,6 @@ public:
 	glm::vec3 position;
 	float scaleX, scaleY, scaleZ;
 	float r, g, b;
-	std::string name;
 	glm::vec3 velocity;
 	float sphere_center_x = 0;
 	float sphere_center_y = 0;

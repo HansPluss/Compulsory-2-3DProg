@@ -19,6 +19,7 @@
 #include "Camera.h"
 #include "Pokal.h"
 #include "Player.h"
+#include "LSM.h"
 
 
 
@@ -258,6 +259,7 @@ int main()
 	Cube Cube3(1.0f, glm::vec3(0.0f, -8.0f, -12.0f), 14.0f, 1.0f, 1.0f,0.5f,0.0f,0.60f);
 	std::vector<GLfloat> flattenedCube3Vertices = Cube3.getFlattenedVertices();
 
+
 	// Generates Vertex Buffer Object and links it to cube
 	//should probably have this in the class but nah, not yet
 	VAO VAO1;
@@ -316,6 +318,10 @@ int main()
 	Player roomDoor(1.0f, glm::vec3(45.0f, -8.0f, -14.0f), 2.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
 	roomDoor.ConstructVBO(roomDoor.getFlattenedVertices(), false);
 
+	Player NPC(1.0f, glm::vec3(8.0f, -8.0f, 1.0f), 1.0f, 1.0f, 1.0f, 0.10f, 0.0f, 0.50f);
+	NPC.ConstructVBO(NPC.getFlattenedVertices(), false);
+	std::vector<GLfloat> NPCVertices = NPC.getFlattenedVertices();
+
 
 	// Unbind all to prevent accidentally modifying them
 	VAO1.Unbind();
@@ -345,6 +351,11 @@ int main()
 	bool isColldingz = false;
 	bool isColldingNegativeZ = false;
 	bool isInHouse = false;
+
+
+	std::vector<double> patrolPoints = { -1 , 2, -0.5, 0.25, 0, 0 };
+	LSM PatrolPath(patrolPoints, patrolPoints.size() / 2);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Specify the color of the background
@@ -356,6 +367,10 @@ int main()
 		
 		camera.Inputs(window);
 		camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+
+
+		//NPC
+		NPC.Patrol(PatrolPath.getCoefficients());
 
 
 		glUniform1f(uniID, scaleValue);
@@ -390,6 +405,10 @@ int main()
 		myPlayer.BindVAO();
 		glDrawArrays(GL_TRIANGLES, 0, myPlayer.mVertecies.size());
 		myPlayer.UnbindVAO();
+
+		NPC.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, NPC.mVertecies.size());
+		NPC.UnbindVAO();
 
 		HouseFloor.BindVAO();
 		glDrawArrays(GL_TRIANGLES, 0, HouseFloor.mVertecies.size());
@@ -602,6 +621,7 @@ int main()
 	VAO2.Delete();
 	VAO3.Delete();
 	myPlayer.VAO5.Delete();
+	NPC.VAO5.Delete();
 	VBO_Cube2.Delete();
 	VBO_Cube3.Delete();
 	VBO_cube.Delete();

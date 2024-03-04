@@ -1,47 +1,50 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGLSession0.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Player.cpp
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(56,36): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(57,36): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(73,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
-          with
-          [
-              _Ty=GLfloat
-          ]
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(74,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
-          with
-          [
-              _Ty=GLfloat
-          ]
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(75,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
-          with
-          [
-              _Ty=GLfloat
-          ]
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(86,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(206,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(242,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(288,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
-          with
-          [
-              _Ty=GLfloat
-          ]
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(289,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
-          with
-          [
-              _Ty=GLfloat
-          ]
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(290,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
-          with
-          [
-              _Ty=GLfloat
-          ]
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(56,36): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(57,36): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(73,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(73,51): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(73,51): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(73,51): warning C4244:             _Ty=GLfloat
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(73,51): warning C4244:         ]
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(74,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(74,51): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(74,51): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(74,51): warning C4244:             _Ty=GLfloat
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(74,51): warning C4244:         ]
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(75,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(75,51): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(75,51): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(75,51): warning C4244:             _Ty=GLfloat
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(75,51): warning C4244:         ]
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(86,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(206,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(242,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(288,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(288,51): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(288,51): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(288,51): warning C4244:             _Ty=GLfloat
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(288,51): warning C4244:         ]
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(289,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(289,51): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(289,51): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(289,51): warning C4244:             _Ty=GLfloat
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(289,51): warning C4244:         ]
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(290,51): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(290,51): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(290,51): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(290,51): warning C4244:             _Ty=GLfloat
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(290,51): warning C4244:         ]
+  Pokal.cpp
   main.cpp
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(366,56): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(371,54): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(385,62): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(391,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(395,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(400,53): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-E:\Github\3DProg\Compulsory-2-3DProg\OpenGLSession0\main.cpp(404,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(357,51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(381,56): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(386,54): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(400,62): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(406,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(410,52): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(414,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(419,53): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(423,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Generating Code...
-  OpenGLSession0.vcxproj -> E:\Github\3DProg\Compulsory-2-3DProg\x64\Debug\Compulsory2Math.exe
+  OpenGLSession0.vcxproj -> C:\Github\Github\3D-Prog\Compulsory-2-3DProg\x64\Debug\Compulsory2Math.exe
