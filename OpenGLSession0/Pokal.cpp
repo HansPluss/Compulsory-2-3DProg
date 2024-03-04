@@ -76,7 +76,7 @@ bool Pokal::CheckCollision(const Player& otherCube)
 	// Iterate through each vertex in the current cube
 	for (const VertexPokal& vertex : mVertecies) {
 		// Iterate through each vertex in the other cube
-		for (const PlayerVertex& otherVertex : otherCube.mVertecies) {
+		for (const Vertex& otherVertex : otherCube.mVertecies) {
 			// Calculate the distance between the two vertices
 			float distance = glm::length(glm::vec3(vertex.x * scaleX + position.x,
 				vertex.y * scaleY + position.y,

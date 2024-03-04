@@ -48,7 +48,7 @@ void Player::BindVAO()
 
 void Player::UpdateVertices(float Xspeed, float Yspeed, float Zspeed, glm::vec3 velocity)
 {
-	for (PlayerVertex& vertex : mVertecies) {
+	for (Vertex& vertex : mVertecies) {
 		vertex.x += Xspeed * velocity.x;
 		vertex.y += Yspeed * velocity.y;
 		vertex.z += Zspeed * velocity.z;	
@@ -69,7 +69,7 @@ VBO Player::GetVBO()
 std::vector<GLfloat> Player::getFlattenedVertices() const
 {
 	std::vector<GLfloat> flattenedVertices;
-	for (const PlayerVertex& vertex : mVertecies) {
+	for (const Vertex& vertex : mVertecies) {
 		flattenedVertices.push_back((vertex.x * scaleX) + position.x);
 		flattenedVertices.push_back((vertex.y * scaleY) + position.y);
 		flattenedVertices.push_back((vertex.z * scaleZ) + position.z);
@@ -115,9 +115,9 @@ bool Player::CheckCollision(const Player& otherCube)
 		}
 	}
 
-	for (const PlayerVertex& vertex : mVertecies) {
+	for (const Vertex& vertex : mVertecies) {
 		// Iterate through each vertex in the other cube
-		for (const PlayerVertex& otherVertex : otherCube.mVertecies) {
+		for (const Vertex& otherVertex : otherCube.mVertecies) {
 			// Calculate the distance between the two vertices
 			float distance = glm::length(glm::vec3(vertex.x * scaleX + position.x,
 				vertex.y * scaleY + position.y,
@@ -180,7 +180,7 @@ double computeDerivativeAtPoint(const std::vector<double>& coefficients, double 
 void Player::Patrol(std::vector<double> coefficients)
 {
 	double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
-	for (PlayerVertex& vertex : mVertecies) {
+	for (Vertex& vertex : mVertecies) {
 		vertex.x += xspeed*20;
 		vertex.y += 0;
 		if (xPositiveDir) vertex.z += Derivative;
@@ -284,7 +284,7 @@ bool Player::PokalCollision( Pokal& otherCube)
 void Player::flattenVertices()
 {
 	std::vector<GLfloat> flattenedVertices;
-	for (const PlayerVertex& vertex : mVertecies) {
+	for (const Vertex& vertex : mVertecies) {
 		flattenedVertices.push_back((vertex.x * scaleX) + position.x);
 		flattenedVertices.push_back((vertex.y * scaleY) + position.y);
 		flattenedVertices.push_back((vertex.z * scaleZ) + position.z);

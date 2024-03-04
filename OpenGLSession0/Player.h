@@ -2,6 +2,7 @@
 #include "Resources/Shaders/VBO.h"
 #include "Resources/Shaders/VAO.h"
 #include <vector>
+#include <array>
 #include <string>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -9,23 +10,24 @@
 #include <cmath>
 #include "Table.h"
 #include "Pokal.h"
+#include "Construct.h"
 
 class Pokal;
 
 
 using namespace std;
-struct PlayerVertex
-{
-	double x, y, z;
-	float r, g, b;
-
-};
+//struct PlayerVertex
+//{
+//	double x, y, z;
+//	float r, g, b;
+//
+//};
 class Player {
 private:
 
 
 public:
-	vector<PlayerVertex> mVertecies;
+std::array<Vertex, 36> mVertecies;
 	glm::vec3 position;
 	float scaleX, scaleY, scaleZ;
 	float r, g, b;
@@ -45,68 +47,15 @@ public:
 	
 	
 	
-	Player(float scale, const glm::vec3& initialPosition = glm::vec3(0.0f, 0.0f, 0.0f), float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
-		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ), velocity(glm::vec3(0.0f)), r(red), g(green), b(blue), VBO1() {
-		PlayerVertex v0{ -a, -a, a , r, g, b };
-		PlayerVertex v1{ a, -a, a , r, g, b };
-		PlayerVertex v2{ a, a, a , r, g, b };
-		PlayerVertex v3{ -a, a, a ,  r, g, b };
-		PlayerVertex v4{ -a, -a, -a ,  r, g, b };
-		PlayerVertex v5{ a, -a, -a ,  r, g, b };
-		PlayerVertex v6{ a, a, -a ,  r, g, b };
-		PlayerVertex v7{ -a, a, -a , r, g, b };
+	Player(float scale, const glm::vec3& initialPosition, float scaleX = 1.0f, float scaleY = 1.0f, float scaleZ = 1.0f, float red = 1.0f, float green = 1.0f, float blue = 1.0f)
+		: a(scale), position(initialPosition), scaleX(scaleX), scaleY(scaleY), scaleZ(scaleZ), velocity(glm::vec3(0.0f)), r(red), g(green), b(blue), VBO1() 
+	{
+		Construct con; 
 
-
-		// Front face
-
-		mVertecies.push_back(v0);
-		mVertecies.push_back(v1);
-		mVertecies.push_back(v3);
-		mVertecies.push_back(v3);
-		mVertecies.push_back(v1);
-		mVertecies.push_back(v2);
-
-
-
-		// Back face
-		mVertecies.push_back(v4);
-		mVertecies.push_back(v5);
-		mVertecies.push_back(v7);
-		mVertecies.push_back(v7);
-		mVertecies.push_back(v5);
-		mVertecies.push_back(v6);
-
-		// Right face
-		mVertecies.push_back(v1);
-		mVertecies.push_back(v5);
-		mVertecies.push_back(v2);
-		mVertecies.push_back(v2);
-		mVertecies.push_back(v5);
-		mVertecies.push_back(v6);
-
-		// Left face
-		mVertecies.push_back(v4);
-		mVertecies.push_back(v0);
-		mVertecies.push_back(v7);
-		mVertecies.push_back(v7);
-		mVertecies.push_back(v0);
-		mVertecies.push_back(v3);
-
-		// Top face
-		mVertecies.push_back(v3);
-		mVertecies.push_back(v2);
-		mVertecies.push_back(v7);
-		mVertecies.push_back(v7);
-		mVertecies.push_back(v2);
-		mVertecies.push_back(v6);
-
-		// Bottom face
-		mVertecies.push_back(v4);
-		mVertecies.push_back(v5);
-		mVertecies.push_back(v0);
-		mVertecies.push_back(v0);
-		mVertecies.push_back(v5);
-		mVertecies.push_back(v1);
+		//Cube
+		//mVertecies = con.Cube(initialPosition, glm::vec3(scaleX, scaleY, scaleZ), glm::vec3(red, green, blue)); 
+		//Table
+		mVertecies = con.Table(a, initialPosition, glm::vec3(red, green, blue));
 
 		//collitionSphere
 		sphere_center_x = initialPosition.x;
