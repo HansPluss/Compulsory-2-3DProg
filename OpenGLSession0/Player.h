@@ -29,6 +29,7 @@ private:
 
 public:
 std::array<Vertex, 36> mVertecies;
+std::array<Vertex, 48> mHouseVertecies;
 	glm::vec3 position;
 	float r, g, b;
 	glm::vec3 velocity;
@@ -46,30 +47,62 @@ std::array<Vertex, 36> mVertecies;
 	
 	
 	Player(float scale, const glm::vec3& initialPosition, float red = 1.0f, float green = 1.0f, float blue = 1.0f, float figure = 1.f)
-		: a(scale), position(initialPosition), velocity(glm::vec3(0.0f)), r(red), g(green), b(blue), VBO1() 
+		: a(scale), position(initialPosition), velocity(glm::vec3(0.0f)), r(red), g(green), b(blue), VBO1()
 	{
-		Construct con; 
+		Construct con;
 
 
 		//Cube
-		if(figure == 1)
-		mVertecies = con.Cube(initialPosition, glm::vec3(0,0,0), glm::vec3(red, green, blue)); 
+		if (figure == 1)
+		{
+			mVertecies = con.Cube(initialPosition, glm::vec3(0, 0, 0), glm::vec3(red, green, blue));
 
-
+			VAO5.Bind();
+			VBO1.Bind();
+			glBufferData(GL_ARRAY_BUFFER, mVertecies.size() * sizeof(Vertex), mVertecies.data(), GL_STATIC_DRAW);
+			VAO5.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+			VAO5.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+			VAO5.Unbind();
+			VBO1.Unbind();
+		}
 		else if (figure == 2)
+		{
 			mVertecies = con.Table(1, initialPosition, glm::vec3(red, green, blue));
 
+			VAO5.Bind();
+			VBO1.Bind();
+			glBufferData(GL_ARRAY_BUFFER, mVertecies.size() * sizeof(Vertex), mVertecies.data(), GL_STATIC_DRAW);
+			VAO5.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+			VAO5.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+			VAO5.Unbind();
+			VBO1.Unbind();
+		}
+
 		else if (figure == 3)
-			mVertecies = con.House(1, glm::vec3(red, green, blue));
+		{
+			mHouseVertecies = con.House(1, glm::vec3(red, green, blue));
+
+			VAO5.Bind();
+			VBO1.Bind();
+			glBufferData(GL_ARRAY_BUFFER, mHouseVertecies.size() * sizeof(Vertex), mHouseVertecies.data(), GL_STATIC_DRAW);
+			VAO5.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+			VAO5.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+			VAO5.Unbind();
+			VBO1.Unbind();
+		}
 		else
+		{
 			mVertecies = con.Cube(initialPosition, glm::vec3(0, 0, 0), glm::vec3(red, green, blue));
-		VAO5.Bind();
-		VBO1.Bind();
-		glBufferData(GL_ARRAY_BUFFER, mVertecies.size() * sizeof(Vertex), mVertecies.data(), GL_STATIC_DRAW);
-		VAO5.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-		VAO5.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-		VAO5.Unbind();
-		VBO1.Unbind();
+
+			VAO5.Bind();
+			VBO1.Bind();
+			glBufferData(GL_ARRAY_BUFFER, mVertecies.size() * sizeof(Vertex), mVertecies.data(), GL_STATIC_DRAW);
+			VAO5.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+			VAO5.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+			VAO5.Unbind();
+			VBO1.Unbind();
+		}
+		
 
 		//Table
 		//mVertecies = con.Table(a, initialPosition, glm::vec3(red, green, blue));

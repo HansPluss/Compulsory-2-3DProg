@@ -89,18 +89,19 @@ int main()
 		myPokaler.push_back(pokal);
 	}
 
-	Player myPlayer(1.0f, glm::vec3(0,-16,0), 0.10f, 0.0f, 0.50f, 3);
+	Player myPlayer(1.0f, glm::vec3(0,-16,0), 0.1f, 0.0f, 0.5f, 1);
 
-	Pokal HouseFloor(1.0f, glm::vec3(22.5f, -8.5f, 0.0f), 15.0f, 0.50f, 15.0f, 0.10f, 0.0f, 0.0f);
-	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);;
-	Player door(1.0f, glm::vec3(0.0f, -16.0f, -13.0f), 0.00f, 1.0f, 0.0f, 1);
+	Pokal HouseFloor(1.0f, glm::vec3(22.5f, -8.5f, 0.0f), 15.0f, 0.5f, 15.0f, 0.10f, 0.0f, 0.0f);
+	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);
 
-	Player house(5.0f, glm::vec3(0.0f, -16.0f, -19.0f), 0.5f, 0.0f, 0.7f, 3);
+	Player door(1.0f, glm::vec3(0.0f, -16.0f, -18.0f), 0.0f, 1.0f, 0.0f, 1);
 
-	Player roomDoor(1.0f, glm::vec3(45.0f, -16.0f, -14.0f), 0.00f, 1.0f, 0.0f, 1);
+	Player house(5.0f, glm::vec3(0.0f, -16.0f, -23.0f), 0.5f, 0.0f, 0.7f, 3);
+
+	Player roomDoor(1.0f, glm::vec3(45.0f, -16.0f, -14.0f), 0.0f, 1.0f, 0.0f, 1);
 ;
 
-	Player NPC(1.0f, glm::vec3(-8.0f, -16, 0.0f), 1.0f, 0.0f, 0.00f, 2);
+	Player NPC(1.0f, glm::vec3(-8.0f, -16, 0.0f), 1.0f, 0.0f, 0.0f, 2);
 
 
 	Pokal mainFloor(1.0f, glm::vec3(0.0f, -8.5f, 0.0f), 20.0f, 0.5f, 20.0f);
@@ -110,8 +111,6 @@ int main()
 	
 	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 	float scaleValue = 100.0f;
-	
-	// Variables that help the rotation of the pyramid
 	
 
 	// Enables the Depth Buffer
@@ -167,6 +166,7 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, myPlayer.mVertecies.size());
 		myPlayer.UnbindVAO();
 
+		// Drawing door in room
 		glm::mat4 roomDmodel = glm::mat4(1.0f);
 		roomDmodel = glm::translate(roomDmodel, roomDoor.position);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * roomDmodel));
@@ -174,6 +174,7 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, roomDoor.mVertecies.size());
 		roomDoor.UnbindVAO();
 
+		// Drawing main floor
 		glm::mat4 mainfloormodel = glm::mat4(1.0f);
 		mainfloormodel = glm::translate(mainfloormodel, mainFloor.position);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * mainfloormodel));
@@ -181,6 +182,7 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, mainFloor.mVertecies.size());
 		mainFloor.UnbindVAO();
 
+		// Drawing door
 		glm::mat4 doorModel = glm::mat4(1.0f);
 		doorModel = glm::translate(doorModel, door.position);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * doorModel));
@@ -188,14 +190,16 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, door.mVertecies.size());
 		door.UnbindVAO();
 
+		// Drawing house
 		glm::mat4 houseModel = glm::mat4(1.0f);
 		houseModel = glm::translate(houseModel, house.position);
 		houseModel = glm::scale(houseModel, glm::vec3(5,5,5));
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj* houseModel));
 		house.BindVAO();
-		glDrawArrays(GL_TRIANGLES, 0, house.mVertecies.size());
+		glDrawArrays(GL_TRIANGLES, 0, house.mHouseVertecies.size());
 		house.UnbindVAO();
 
+		// Drawing floor in room/house
 		glm::mat4 HouseFloorModel = glm::mat4(1.0f);
 		HouseFloorModel = glm::translate(HouseFloorModel, HouseFloor.position);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * HouseFloorModel));
@@ -203,6 +207,7 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, HouseFloor.mVertecies.size());
 		HouseFloor.UnbindVAO();
 
+		// Drawing npc
 		glm::mat4 NPCModel = glm::mat4(1.0f);
 		NPCModel = glm::translate(NPCModel, NPC.position);
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * NPCModel));
@@ -210,6 +215,7 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, NPC.mVertecies.size());
 		NPC.UnbindVAO();
 
+		// Drawing trophies
 		glm::mat4 PokalModel[maxPokals];
 
 		for (int i = 0; i < maxPokals; ++i)

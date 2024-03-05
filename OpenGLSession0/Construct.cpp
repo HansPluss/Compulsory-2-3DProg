@@ -111,9 +111,9 @@ std::array<Vertex, 36> Construct::Table(float size, glm::vec3 cordinates, glm::v
     return TableArray;
 }
 
-std::array<Vertex, 36> Construct::House(float size, glm::vec3 Color)
+std::array<Vertex, 48> Construct::House(float size, glm::vec3 Color)
 {
-    std::array<Vertex, 36> houseArray;
+    std::array<Vertex, 48> houseArray;
 
     // House
     Vertex v0{ -size, -size, size , Color.x, Color.y, Color.z };
@@ -125,9 +125,10 @@ std::array<Vertex, 36> Construct::House(float size, glm::vec3 Color)
     Vertex v6{ size, size, -size ,  Color.x, Color.y, Color.z };
     Vertex v7{ -size, size, -size , Color.x, Color.y, Color.z };
 
-    //// Roof
-    //Vertex v8{ 0.0f, scaleXYZ.y * 1.3f, scaleXYZ.z,  Color.x, Color.y, Color.z };
-    //Vertex v9{ 0.0f, scaleXYZ.y * 1.3f, -scaleXYZ.z, Color.x, Color.y, Color.z };
+    // Roof
+    Vertex v8{ 0.0f, size + size / 2,  size, Color.x, Color.y, Color.z };
+    Vertex v9{ 0.0f, size + size / 2, -size, Color.x, Color.y, Color.z };
+
     houseArray =
     {
         // Front face
@@ -147,13 +148,22 @@ std::array<Vertex, 36> Construct::House(float size, glm::vec3 Color)
         v7, v0, v3,
 
         // Bottom face
-        v4, v5, v0,
-        v0, v5, v1,
+        v4, v5, v0, 
+        v0, v5, v1, 
 
-        // Top face
-        v3, v2, v7,
-        v7, v2, v6,
+        // Roof faces
+        // Front triangle
+        v3, v2, v8,
+        // Back triangle
+        v6, v7, v9,
 
+        // Left roof face
+        v3, v7, v8,
+        v7, v8, v9,
+
+        // Right roof face
+        v2, v6, v8,
+        v6, v8, v9
     };
 
     return houseArray;
