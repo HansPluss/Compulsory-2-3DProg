@@ -9,26 +9,26 @@ float Player::GetA()
     return a;
 }
 
-void Player::ConstructVBO(std::vector<GLfloat> flattenedVertices, bool update)
-{
-	
-	
-
-	// Update VBO data if necessary
-	if (update) {
-		VBO1.UpdateData(flattenedVertices.data(), flattenedVertices.size() * sizeof(GLfloat));
-	}
-	else {
-		VAO5.Bind();
-		VBO1.UpdateData(flattenedVertices.data(), flattenedVertices.size() * sizeof(GLfloat));
-		VAO5.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-		VAO5.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-		VAO5.Unbind();
-		VBO1.Unbind();
-	}
-	
-	
-}
+//void Player::ConstructVBO(std::vector<GLfloat> flattenedVertices, bool update)
+//{
+//	
+//	
+//
+//	// Update VBO data if necessary
+//	//if (update) {
+//	//	VBO1.UpdateData(flattenedVertices.data(), flattenedVertices.size() * sizeof(GLfloat));
+//	//}
+//	//else {
+//	//	VAO5.Bind();
+//	//	VBO1.UpdateData(flattenedVertices.data(), flattenedVertices.size() * sizeof(GLfloat));
+//	//	VAO5.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+//	//	VAO5.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+//	//	VAO5.Unbind();
+//	//	VBO1.Unbind();
+//	//}
+//	
+//	
+//}
 
 void Player::DeleteVBOANDVAO()
 {
@@ -48,15 +48,18 @@ void Player::BindVAO()
 
 void Player::UpdateVertices(float Xspeed, float Yspeed, float Zspeed, glm::vec3 velocity)
 {
-	for (Vertex& vertex : mVertecies) {
-		vertex.x += Xspeed * velocity.x;
-		vertex.y += Yspeed * velocity.y;
-		vertex.z += Zspeed * velocity.z;	
-	}
-	sphere_center_x = position.x;
-	sphere_center_z = position.z;
-	
-	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
+	position.x += Xspeed;
+	position.y += Yspeed;
+position.z += Zspeed;
+	//for (Vertex& vertex : mVertecies) {
+	//	vertex.x += Xspeed * velocity.x;
+	//	vertex.y += Yspeed * velocity.y;
+	//	vertex.z += Zspeed * velocity.z;	
+	//}
+	//position.x = mVertecies[1].x + a;
+	//position.z = mVertecies[1].z - a;
+	//
+	//VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
 }
 
 VBO Player::GetVBO()
@@ -64,40 +67,79 @@ VBO Player::GetVBO()
 	return VBO1;
 }
 
-
-
-std::vector<GLfloat> Player::getFlattenedVertices() const
+void Player::inputs(GLFWwindow* window)
 {
-	std::vector<GLfloat> flattenedVertices;
-	for (const Vertex& vertex : mVertecies) {
-		flattenedVertices.push_back((vertex.x * scaleX) + position.x);
-		flattenedVertices.push_back((vertex.y * scaleY) + position.y);
-		flattenedVertices.push_back((vertex.z * scaleZ) + position.z);
-		flattenedVertices.push_back(vertex.r);
-		flattenedVertices.push_back(vertex.g);
-		flattenedVertices.push_back(vertex.b);
-	}
+	float speed = 0.01f;
+	float translationSpeed = speed;
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && up) {
 
-	return flattenedVertices;
+		UpdateVertices(0, 0, -speed, glm::vec3(0, 0, 1));
+		//position.z -= translationSpeed;
+
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && down) {
+
+		UpdateVertices(0, 0, speed, glm::vec3(0, 0, 1));
+		//position.z += translationSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && left) {
+
+		UpdateVertices(-speed, 0, 0, glm::vec3(1, 0, 0));
+		//position.x -= translationSpeed;
+
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && right) {
+
+		UpdateVertices(speed, 0, 0, glm::vec3(1, 0, 0));
+		//position.x += translationSpeed;
+	}
 }
+
+
+
+//std::vector<GLfloat> Player::getFlattenedVertices() const
+//{
+//	std::vector<GLfloat> flattenedVertices;
+//	for (const Vertex& vertex : mVertecies) {
+//		flattenedVertices.push_back((vertex.x * scaleX) + position.x);
+//		flattenedVertices.push_back((vertex.y * scaleY) + position.y);
+//		flattenedVertices.push_back((vertex.z * scaleZ) + position.z);
+//		flattenedVertices.push_back(vertex.r);
+//		flattenedVertices.push_back(vertex.g);
+//		flattenedVertices.push_back(vertex.b);
+//	}
+//
+//	return flattenedVertices;
+//}
 
 bool Player::CheckCollision( Player& otherCube)
 {
-	float distance_centers = std::sqrt(std::pow(sphere_center_x - otherCube.sphere_center_x, 2) +
-		std::pow(sphere_center_y - otherCube.sphere_center_y, 2) +
-		std::pow(sphere_center_z - otherCube.sphere_center_z, 2));
-	float dx = std::abs(sphere_center_x - otherCube.sphere_center_x);
-	float dy = std::abs(sphere_center_y - otherCube.sphere_center_y);
-	float dz = std::abs(sphere_center_z - otherCube.sphere_center_z);
+	float distance_centers = glm::length(position - otherCube.position);
+		/*
+		std::sqrt(std::pow(position.x - otherCube.position.x, 2) +
+		std::pow(position.y - otherCube.position.y, 2) +
+		std::pow(position.z - otherCube.position.z, 2));
+	float dx = std::abs(position.x - otherCube.position.x);
+	float dy = std::abs(position.y - otherCube.position.y);
+	float dz = std::abs(position.z - otherCube.position.z);
+	*/
+	cout << distance_centers << endl;
+	cout << "Cube1 pos " << position.x << " " << position.y << " " << position.z << endl;
+	cout << "Cube2 pos " << otherCube.position.x << " " << otherCube.position.y << " " << otherCube.position.z << endl;
 
 	// If the distance between centers is less than the sum of the radii, collision occurs
 	if (distance_centers <= (sphere_radius + otherCube.sphere_radius)) {
-		// Collision detected
-		  // Collision detected
 
+		//float minimuntranslation = sphere_radius +otherCube.sphere_radius - distance_centers;
+		//auto dirvec = glm::normalize(position - otherCube.position);
+		//position -= dirvec * minimuntranslation;
+
+		float dx = std::abs(position.x - otherCube.position.x);
+		float dy = std::abs(position.y - otherCube.position.y);
+		float dz = std::abs(position.z - otherCube.position.z);
 
 		if (dx > dz) {
-			if (sphere_center_x < otherCube.sphere_center_x) {
+			if (position.x < otherCube.position.x) {
 				right = false;
 			}
 			else {
@@ -107,7 +149,7 @@ bool Player::CheckCollision( Player& otherCube)
 			}
 		}
 		else if (dy < dx && dy < dz) {
-			if (sphere_center_z < otherCube.sphere_center_z) {
+			if (position.z < otherCube.position.z) {
 				down = false;
 			}
 			else {
@@ -123,7 +165,7 @@ bool Player::CheckCollision( Player& otherCube)
 		left = true;
 		right = true;
 		otherCube.move = true;
-		std::cout << "X " << dx << "Y " << dy << "Z " << dz << "\n";
+		//std::cout << "X " << dx << "Y " << dy << "Z " << dz << "\n";
 	}
 
 	for (const Vertex& vertex : mVertecies) {
@@ -190,123 +232,39 @@ double computeDerivativeAtPoint(const std::vector<double>& coefficients, double 
 
 void Player::Patrol(std::vector<double> coefficients)
 {
-	if(move)
-	{
-		double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
-		for (Vertex& vertex : mVertecies) {
-			vertex.x += xspeed * 20;
-			vertex.y += 0;
-			if (xPositiveDir) vertex.z += Derivative;
-			else vertex.z -= Derivative;
-		}
-		xvalue += xspeed;
-		if (xvalue >= 1) {
-			xspeed *= -1;
-			xPositiveDir = false;
-		}
-		else if (xvalue <= -0.25) {
-			xspeed *= -1;
-			xPositiveDir = true;
-		}
-		sphere_center_x = position.x;
-		sphere_center_z = position.z;
-		VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
-	}
-}
-
-
-
-
-void Player::TableCollision(const Table& otherCube)
-{
-	float distance_centers = std::sqrt(std::pow(sphere_center_x - otherCube.sphere_center_x, 2) +
-		std::pow(sphere_center_y - otherCube.sphere_center_y, 2) +
-		std::pow(sphere_center_z - otherCube.sphere_center_z, 2));
-
-	// If the distance between centers is less than the sum of the radii, collision occurs
-	if (distance_centers <= (sphere_radius + otherCube.sphere_radius)) {
-		// Collision detected
-		  // Collision detected
-		float dx = std::abs(sphere_center_x - otherCube.sphere_center_x);
-		float dy = std::abs(sphere_center_y - otherCube.sphere_center_y);
-		float dz = std::abs(sphere_center_z - otherCube.sphere_center_z);
-
-		if (dx > dz) {
-			if (sphere_center_x < otherCube.sphere_center_x) {
-				right = false;
-			}
-			else {
-
-				left = false;
-
-			}
-		}
-		else if (dy < dx && dy < dz) {
-			if (sphere_center_z < otherCube.sphere_center_z) {
-				down = false;
-			}
-			else {
-				up = false;
-			}
-		}
-	}
-	std::cout << distance_centers << "\n";
-	
-}
-
-bool Player::PokalCollision( Pokal& otherCube)
-{
-	float distance_centers = std::sqrt(std::pow(sphere_center_x - otherCube.sphere_center_x, 2) +
-		std::pow(sphere_center_y - otherCube.sphere_center_y, 2) +
-		std::pow(sphere_center_z - otherCube.sphere_center_z, 2));
-
-	// If the distance between centers is less than the sum of the radii, collision occurs
-	if (distance_centers <= (sphere_radius + otherCube.sphere_radius)) {
-		// Collision detected
-		  // Collision detected
-		float dx = std::abs(sphere_center_x - otherCube.sphere_center_x);
-		float dy = std::abs(sphere_center_y - otherCube.sphere_center_y);
-		float dz = std::abs(sphere_center_z - otherCube.sphere_center_z);
-
-		if (dx > dz) {
-			if (sphere_center_x < otherCube.sphere_center_x) {
-				right = false;
-			}
-			else {
-
-				left = false;
-
-			}
-		}
-		else if (dy < dx && dy < dz) {
-			if (sphere_center_z < otherCube.sphere_center_z) {
-				down = false;
-			}
-			else {
-				up = false;
-			}
-		}
-		return true;
-	}
-	else
-	{
-		up = true; 
-		down = true; 
-		left = true; 
-		right = true; 
-		return false;
-	}
+	//if(move)
+	//{
+	//	double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
+	//	for (Vertex& vertex : mVertecies) {
+	//		vertex.x += xspeed * 20;
+	//		vertex.y += 0;
+	//		if (xPositiveDir) vertex.z += Derivative;
+	//		else vertex.z -= Derivative;
+	//	}
+	//	xvalue += xspeed;
+	//	if (xvalue >= 1) {
+	//		xspeed *= -1;
+	//		xPositiveDir = false;
+	//	}
+	//	else if (xvalue <= -0.25) {
+	//		xspeed *= -1;
+	//		xPositiveDir = true;
+	//	}
+	//	position.x = mVertecies[1].x + a;
+	//	position.z = mVertecies[1].z - a;
+	//	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
+	//}
 }
 
 void Player::flattenVertices()
 {
-	std::vector<GLfloat> flattenedVertices;
-	for (const Vertex& vertex : mVertecies) {
-		flattenedVertices.push_back((vertex.x * scaleX) + position.x);
-		flattenedVertices.push_back((vertex.y * scaleY) + position.y);
-		flattenedVertices.push_back((vertex.z * scaleZ) + position.z);
-		flattenedVertices.push_back(vertex.r);
-		flattenedVertices.push_back(vertex.g);
-		flattenedVertices.push_back(vertex.b);
-	}
+	//std::vector<GLfloat> flattenedVertices;
+	//for (const Vertex& vertex : mVertecies) {
+	//	flattenedVertices.push_back(vertex.x);
+	//	flattenedVertices.push_back(vertex.y);
+	//	flattenedVertices.push_back(vertex.z);
+	//	flattenedVertices.push_back(vertex.r);
+	//	flattenedVertices.push_back(vertex.g);
+	//	flattenedVertices.push_back(vertex.b);
+	//}
 }

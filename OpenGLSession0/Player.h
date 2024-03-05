@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include<GLFW/glfw3.h>
 #include <cmath>
 #include "Table.h"
 #include "Pokal.h"
@@ -32,9 +33,6 @@ std::array<Vertex, 36> mVertecies;
 	float scaleX, scaleY, scaleZ;
 	float r, g, b;
 	glm::vec3 velocity;
-	float sphere_center_x = 0;
-	float sphere_center_y = 0;
-	float sphere_center_z = 0;
 	float sphere_radius = 0;
 	bool up = true;
 	bool down = true;
@@ -53,34 +51,42 @@ std::array<Vertex, 36> mVertecies;
 	{
 		Construct con; 
 
+
 		//Cube
 		mVertecies = con.Cube(initialPosition, glm::vec3(scaleX, scaleY, scaleZ), glm::vec3(red, green, blue)); 
+
+		VAO5.Bind();
+		VBO1.Bind();	
+		//VBO1.UpdateData(mVertecies.data(), mVertecies.size() * sizeof(float));
+
+		glBufferData(GL_ARRAY_BUFFER, mVertecies.size() * sizeof(Vertex), mVertecies.data(), GL_STATIC_DRAW);
+		VAO5.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+		VAO5.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+		VAO5.Unbind();
+		VBO1.Unbind();
+
 		//Table
 		//mVertecies = con.Table(a, initialPosition, glm::vec3(red, green, blue));
 
 		//collitionSphere
-		sphere_center_x = initialPosition.x;
-		sphere_center_y = initialPosition.y;
-		sphere_center_z = initialPosition.z;
 		sphere_radius = a; 
 
 
-		flattenVertices();
+		//flattenVertices();
 	}
 	float GetA();
-	std::vector<GLfloat> getFlattenedVertices() const;
-	void ConstructVBO(std::vector<GLfloat> flattenedVertices, bool update);
+	/*std::vector<GLfloat> getFlattenedVertices() const;*/
+	/*void ConstructVBO(std::vector<GLfloat> flattenedVertices, bool update);*/
 	void DeleteVBOANDVAO();
 	void UnbindVAO();
 	void BindVAO();
 	void UpdateVertices(float Xspeed, float Yspeed, float Zspeed, glm::vec3 velocity);
 	VBO GetVBO();
+	void inputs(GLFWwindow* window);
 
 	void Patrol(std::vector<double> coefficients);
 	
 	bool CheckCollision( Player& otherCube);
-	void TableCollision(const Table& otherCube);
-	bool PokalCollision(Pokal& otherCube);
 	
 
 

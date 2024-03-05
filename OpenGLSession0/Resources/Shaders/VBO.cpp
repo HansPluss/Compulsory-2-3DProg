@@ -18,7 +18,7 @@ void VBO::UpdateData(const void* data, size_t size)
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
 
 	// Unbind the VBO
-	Unbind();
+	//Unbind();
 }
 
 // Binds the VBO

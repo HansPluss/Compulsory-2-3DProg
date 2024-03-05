@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 struct Vertex
 {
-	double x, y, z;
+	float x, y, z;
 	float r, g, b;
 
 };

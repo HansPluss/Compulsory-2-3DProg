@@ -3,7 +3,7 @@
 std::array<Vertex, 36> Construct::Cube(glm::vec3 cordinates, glm::vec3 sizeXYZ, glm::vec3 Color)
 {
 	std::array<Vertex, 36> CubeArray;
-
+    sizeXYZ = glm::vec3(1.f, 1.f, 1.f);
     Vertex v0{ -sizeXYZ.x, -sizeXYZ.y, sizeXYZ.z , Color.x, Color.y, Color.z };
     Vertex v1{ sizeXYZ.x, -sizeXYZ.y, sizeXYZ.z, Color.x, Color.y, Color.z };
     Vertex v2{ sizeXYZ.x, sizeXYZ.y, sizeXYZ.z , Color.x, Color.y, Color.z };
@@ -13,35 +13,54 @@ std::array<Vertex, 36> Construct::Cube(glm::vec3 cordinates, glm::vec3 sizeXYZ, 
     Vertex v6{ sizeXYZ.x, sizeXYZ.y, -sizeXYZ.z ,  Color.x, Color.y, Color.z };
     Vertex v7{ -sizeXYZ.x, sizeXYZ.y, -sizeXYZ.z , Color.x, Color.y, Color.z };
 
+    CubeArray[0] = v0;
+    CubeArray[1] = v1;
+    CubeArray[2] = v2;
+    CubeArray[3] = v2;
+    CubeArray[4] = v3;
+    CubeArray[5] = v0;
 
+    // Right face
+    CubeArray[6] = v1;
+    CubeArray[7] = v5;
+    CubeArray[8] = v6;
+    CubeArray[9] = v6;
+    CubeArray[10] = v2;
+    CubeArray[11] = v1;
 
-	// Front face
-      CubeArray = {
-        // Front face
-        v0, v1, v3,
-        v3, v1, v2,
+    // Back face
+    CubeArray[12] = v5;
+    CubeArray[13] = v4;
+    CubeArray[14] = v7;
+    CubeArray[15] = v7;
+    CubeArray[16] = v6;
+    CubeArray[17] = v5;
 
-        // Back face
-        v4, v5, v7,
-        v7, v5, v6,
+    // Left face
+    CubeArray[18] = v4;
+    CubeArray[19] = v0;
+    CubeArray[20] = v3;
+    CubeArray[21] = v3;
+    CubeArray[22] = v7;
+    CubeArray[23] = v4;
 
-        // Right face
-        v1, v5, v2,
-        v2, v5, v6,
+    // Top face
+    CubeArray[24] = v3;
+    CubeArray[25] = v2;
+    CubeArray[26] = v6;
+    CubeArray[27] = v6;
+    CubeArray[28] = v7;
+    CubeArray[29] = v3;
 
-        // Left face
-        v4, v0, v7,
-        v7, v0, v3,
+    // Bottom face
+    CubeArray[30] = v0;
+    CubeArray[31] = v4;
+    CubeArray[32] = v5;
+    CubeArray[33] = v5;
+    CubeArray[34] = v1;
+    CubeArray[35] = v0;
 
-        // Top face
-        v3, v2, v7,
-        v7, v2, v6,
-
-        // Bottom face
-        v4, v5, v0,
-        v0, v5, v1
-    };
-      return CubeArray; 
+    return CubeArray; 
 }
 
 std::array<Vertex, 36> Construct::Table(float size, glm::vec3 cordinates, glm::vec3 Color)

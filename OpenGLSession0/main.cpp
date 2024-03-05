@@ -65,54 +65,52 @@ int main()
 	glViewport(0, 0, width, height);
 
 	Shader shaderProgram("default.vert", "default.frag");
+	shaderProgram.Activate();
 
 	
 	
-	std::vector<Pokal> myPokaler;
-	std::srand(static_cast<unsigned>(std::time(nullptr)));
-	float maxX = 18;
-	float minX = -18;
-	float maxZ = 18;
-	float minZ = -18;
-	int maxPokals = 8;
-	int score = 0;
+	//std::vector<Pokal> myPokaler;
+	//std::srand(static_cast<unsigned>(std::time(nullptr)));
+	//float maxX = 18;
+	//float minX = -18;
+	//float maxZ = 18;
+	//float minZ = -18;
+	//int maxPokals = 8;
+	//int score = 0;
 
 
 	//creating our objects in the scene
-	for (int i = 0; i < maxPokals; ++i) {
-		Pokal pokal(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.f, 0.75f, 1.0f, 0.0f);
-		myPokaler.push_back(pokal);
+	//for (int i = 0; i < maxPokals; ++i) {
+	//	Pokal pokal(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.f, 0.75f, 1.0f, 0.0f);
+	//	myPokaler.push_back(pokal);
 
 
-	}
-	for (int i = 0; i < maxPokals; ++i) {
+	//}
+	//for (int i = 0; i < maxPokals; ++i) {
 
-		float randomX = static_cast<float>(std::rand()) / RAND_MAX * (maxX - minX) + minX;
-		float randomZ = static_cast<float>(std::rand()) / RAND_MAX * (maxZ - minZ) + minZ;
+	//	float randomX = static_cast<float>(std::rand()) / RAND_MAX * (maxX - minX) + minX;
+	//	float randomZ = static_cast<float>(std::rand()) / RAND_MAX * (maxZ - minZ) + minZ;
 
-		myPokaler[i].position.x = randomX;
-		myPokaler[i].position.z = randomZ;
-		myPokaler[i].ConstructVBO(myPokaler[i].getFlattenedVertices(),false);
-		myPokaler[i].UpdateVertices(0, 0, 0);
-	}
-	Player myPlayer(1.0f, glm::vec3(8.0f, -8.0f, 1.0f), 1.0f, 1.0f, 1.0f, 0.10f, 0.0f, 0.50f);
-	myPlayer.ConstructVBO(myPlayer.getFlattenedVertices(),false);
-	std::vector<GLfloat> playerVertices = myPlayer.getFlattenedVertices();
+	//	myPokaler[i].position.x = randomX;
+	//	myPokaler[i].position.z = randomZ;
+	//	myPokaler[i].ConstructVBO(myPokaler[i].getFlattenedVertices(),false);
+	//	myPokaler[i].UpdateVertices(0, 0, 0);
+	//}
+	Player myPlayer(1.0f, glm::vec3(0,-8,0), 1.0f, 1.0f, 1.0f, 0.10f, 0.0f, 0.50f);
 
-	Pokal HouseFloor(1.0f, glm::vec3(45.0f, -10.0f, 0.0f), 15.0f, 0.50f, 15.0f, 0.10f, 0.0f, 0.0f);
-	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);
-	HouseFloor.UpdateVertices(0,0,0);
-	Player door(1.0f, glm::vec3(0.0f, -8.0f, -12.0f), 2.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
-	door.ConstructVBO(door.getFlattenedVertices(), false);
+
+	Pokal HouseFloor(1.0f, glm::vec3(45.0f, -8.5f, 0.0f), 15.0f, 0.50f, 15.0f, 0.10f, 0.0f, 0.0f);
+	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);;
+	Player door(1.0f, glm::vec3(0.0f, -8.0f, -8.0f), 2.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
+
 
 	Player roomDoor(1.0f, glm::vec3(45.0f, -8.0f, -14.0f), 2.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
-	roomDoor.ConstructVBO(roomDoor.getFlattenedVertices(), false);
+;
 
-	Player NPC(1.0f, glm::vec3(-8.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.00f);
-	NPC.ConstructVBO(NPC.getFlattenedVertices(), false);
-	std::vector<GLfloat> NPCVertices = NPC.getFlattenedVertices();
+	Player NPC(1.0f, glm::vec3(-8.0f, -8, 0.0f), 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.00f);
 
-	Pokal mainFloor(1.0f, glm::vec3(0.0f, -10.0f, 0.0f), 20.0f, 0.5f, 20.0f);
+
+	Pokal mainFloor(1.0f, glm::vec3(0.0f, -8.5f, 0.0f), 20.0f, 0.5f, 20.0f);
 	mainFloor.ConstructVBO(mainFloor.getFlattenedVertices(),false);
 	// Unbind all to prevent accidentally modifying them
 	
@@ -141,10 +139,10 @@ int main()
 	bool isInHouse = false;
 
 
-	std::vector<double> patrolPoints = { -1 , 2, -0.5, 0.25, 0, 0 }; // points for patrolling
-	LSM PatrolPath(patrolPoints, patrolPoints.size() / 2); // the degree of the function, f.exa x^2
+	//std::vector<double> patrolPoints = { -1 , 2, -0.5, 0.25, 0, 0 }; // points for patrolling
+	//LSM PatrolPath(patrolPoints, patrolPoints.size() / 2); // the degree of the function, f.exa x^2
 
-	SphereCollition sc(myPlayer, NPC);
+	//SphereCollition sc(myPlayer, NPC);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -155,208 +153,112 @@ int main()
 		// Tell OpenGL which Shader Program we want to use
 		shaderProgram.Activate();
 		
+		myPlayer.inputs(window);
 		camera.Inputs(window);
+		myPlayer.CheckCollision(NPC);
 		//Set render distance and FOV
-		camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
+		glm::mat4 viewproj= camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
 
-
-		//NPC
-		NPC.Patrol(PatrolPath.getCoefficients());
-		/*sc;*/
-
-
-		glUniform1f(uniID, scaleValue);
-		
-		for (int i = 0; i < maxPokals; ++i) {
-			myPokaler[i].BindVAO();
-			glDrawArrays(GL_TRIANGLES, 0, myPokaler[i].mVertecies.size());
-			myPokaler[i].UnbindVAO();
-		}
-
-
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, myPlayer.position);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj*model));
 		myPlayer.BindVAO();
+		myPlayer.GetVBO().Bind();
 		glDrawArrays(GL_TRIANGLES, 0, myPlayer.mVertecies.size());
 		myPlayer.UnbindVAO();
 
-		NPC.BindVAO();
-		glDrawArrays(GL_TRIANGLES, 0, NPC.mVertecies.size());
-		NPC.UnbindVAO();
-
-		HouseFloor.BindVAO();
-		glDrawArrays(GL_TRIANGLES, 0, HouseFloor.mVertecies.size());
-		HouseFloor.UnbindVAO();
-
-
-		door.BindVAO();
-		glDrawArrays(GL_TRIANGLES, 0, door.mVertecies.size());
-		door.UnbindVAO();
-
+		glm::mat4 roomDmodel = glm::mat4(1.0f);
+		roomDmodel = glm::translate(roomDmodel, roomDoor.position);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * roomDmodel));
 		roomDoor.BindVAO();
 		glDrawArrays(GL_TRIANGLES, 0, roomDoor.mVertecies.size());
 		roomDoor.UnbindVAO();
 
+		glm::mat4 mainfloormodel = glm::mat4(1.0f);
+		mainfloormodel = glm::translate(mainfloormodel, mainFloor.position);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * mainfloormodel));
 		mainFloor.BindVAO();
 		glDrawArrays(GL_TRIANGLES, 0, mainFloor.mVertecies.size());
 		mainFloor.UnbindVAO();
 
-		if (isColldingNegativeX && isColldingNegativeZ && isColldingx && isColldingz) {
-			isColldingNegativeX = false;
-			isColldingx = false;
-			isColldingz = false;
-			isColldingNegativeZ = false;
+		glm::mat4 doorModel = glm::mat4(1.0f);
+		doorModel = glm::translate(doorModel, door.position);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * doorModel));
+		door.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, door.mVertecies.size());
+		door.UnbindVAO();
 
-		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && myPlayer.left)
-		{
-			
-			float newpos = myPlayer.position.x - translationSpeed;
-			// Check if the new position will cause a collision
-			if (!isColldingNegativeX)
-			{
-				//Cube2.position.x = newPosition;
-				myPlayer.position.x = newpos;
-		
-				// Update vertices and VBO
-				glm::vec3 velocity(1, 0, 0);
-				myPlayer.UpdateVertices(-translationSpeed, 0.0f, 0.0f, velocity);
+		glm::mat4 HouseFloorModel = glm::mat4(1.0f);
+		HouseFloorModel = glm::translate(HouseFloorModel, HouseFloor.position);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * HouseFloorModel));
+		HouseFloor.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, HouseFloor.mVertecies.size());
+		HouseFloor.UnbindVAO();
 
-				
-			}
-			
-			
-		}
-		
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && myPlayer.right)
-		{
-			
-			float newpos = myPlayer.position.x + translationSpeed;
-			// Check if the new position will cause a collision
-			if (!isColldingx)
-			{
-				//Cube2.position.x = newPosition;
-				myPlayer.position.x = newpos;
-				glm::vec3 velocity(1, 0, 0);
-				myPlayer.UpdateVertices(translationSpeed, 0.0f, 0.0f, velocity);
-				
-			}
-			
-			
-		}
+		glm::mat4 NPCModel = glm::mat4(1.0f);
+		NPCModel = glm::translate(NPCModel, NPC.position);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * NPCModel));
+		NPC.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, NPC.mVertecies.size());
+		NPC.UnbindVAO();
 
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && myPlayer.up)
-		{
-			
-			float newpos = myPlayer.position.z - translationSpeed;
-			// Check if the new position will cause a collision
-			if (!isColldingNegativeZ)
-			{
-				//Cube2.position.z = newPosition;
-				myPlayer.position.z = newpos;
-				glm::vec3 velocity(0, 0, 1);
-				myPlayer.UpdateVertices(0.0f, 0.0f, -translationSpeed, velocity);
-				// Update vertices and VBO
-				
-				
-				
-			}
-			
-			
-		}
 
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && myPlayer.down)
-		{
-			
-			float newpos = myPlayer.position.z + translationSpeed;
-			// Check if the new position will cause a collision
-			if (!isColldingz)
-			{
-				//Cube2.position.z = newPosition;
-				myPlayer.position.z = newpos;
-				glm::vec3 velocity(0, 0, 1);
-				myPlayer.UpdateVertices(0.0f, 0.0f, translationSpeed, velocity);
-			
-				
-				
-			}
-			
-			
-		}
-		if (!isInHouse) {
-			//if (myPlayer.position.x < -3) {
-
-			//	isColldingNegativeX = true;
-			//	//isColldingx = false;
-
-			//}
-			//else {
-			//	isColldingNegativeX = false;
-			//}
-			//if (myPlayer.position.x > 11) {
-			//	isColldingx = true;
-			//	//isColldingNegativeX = false;
-			//}
-			//else {
-			//	isColldingx = false;
-			//}
-			//if (myPlayer.position.z < -6) {
-
-			//	isColldingNegativeZ = true;
-			//	//isColldingx = false;
-			//	//camera.Position.x = Cube2.position.x; // for le door later
-			//}
-			//else {
-			//	isColldingNegativeZ = false;
-			//}
-			//if (myPlayer.position.z > 7) {
-			//	isColldingz = true;
-			//	//isColldingNegativeX = false;
-			//}
-			//else {
-			//	isColldingz = false;
-			//}
-
-		}
-		else {
-		
-		}
 		
 
-		for (int i = 0; i < maxPokals; ++i) {
-			if (myPokaler[i].CheckCollision(myPlayer) /*|| myPlayer.PokalCollision(myPokaler[i])*/) {
-				// Collision detected between player and pokal[i]
-				myPokaler[i].position.y += 10;
-				myPokaler[i].position.z = -6;
-				myPokaler[i].sphere_center_y += 10;
-				myPokaler[i].sphere_center_z = -6;
-				myPokaler[i].UpdateVertices(0, 10, 0);
-				score++;
-				std::cout << "Current Score: " << score << std::endl;
-				// Do something when a collision occurs, e.g., remove the pokal or decrease player health
-			}
-		}
-		if (myPlayer.CheckCollision(door)) {
-			cout << "Door" << endl;
-			myPlayer.position.x = 45;
-			myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
-			camera.Position.x = myPlayer.position.x; // for le door later
-			myPlayer.sphere_center_x = myPlayer.position.x;
-			myPlayer.sphere_center_z = myPlayer.position.z;
-			door.sphere_center_x = door.position.x;
-			door.sphere_center_z = door.position.z;
-			isInHouse = true;
-		}
-		if (roomDoor.CheckCollision(myPlayer)) {
 
-			myPlayer.position.x = 0;
-			myPlayer.position.z = 8;
-			myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
-			camera.Position.x = myPlayer.position.x;
-			myPlayer.sphere_center_x = myPlayer.position.x;
-			myPlayer.sphere_center_z = myPlayer.position.z;
-			roomDoor.sphere_center_x = roomDoor.position.x;
-			roomDoor.sphere_center_z = roomDoor.position.z;
-			isInHouse = false;
-		}
+		//NPC
+		//NPC.Patrol(PatrolPath.getCoefficients());
+		///*sc;*/
+
+
+		//glUniform1f(uniID, scaleValue);
+		//
+		//for (int i = 0; i < maxPokals; ++i) {
+		//	myPokaler[i].BindVAO();
+		//	glDrawArrays(GL_TRIANGLES, 0, myPokaler[i].mVertecies.size());
+		//	myPokaler[i].UnbindVAO();
+		//}
+
+
+
+
+
+
+
+		
+
+		//for (int i = 0; i < maxPokals; ++i) {
+		//	if (myPokaler[i].CheckCollision(myPlayer) /*|| myPlayer.PokalCollision(myPokaler[i])*/) {
+		//		// Collision detected between player and pokal[i]
+		//		myPokaler[i].position.y += 10;
+		//		myPokaler[i].position.z = -6;
+		//		myPokaler[i].sphere_center_y += 10;
+		//		myPokaler[i].sphere_center_z = -6;
+		//		myPokaler[i].UpdateVertices(0, 10, 0);
+		//		score++;
+		//		std::cout << "Current Score: " << score << std::endl;
+		//		// Do something when a collision occurs, e.g., remove the pokal or decrease player health
+		//	}
+		//}
+		//if (myPlayer.CheckCollision(door)) {
+		//	cout << "Door" << endl;
+		//	myPlayer.position.x = 45;
+		//	myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
+		//	camera.Position.x = myPlayer.position.x; // for le door later
+		//	myPlayer.sphere_center_x = myPlayer.mVertecies[1].x + myPlayer.a;
+		//	myPlayer.sphere_center_z = myPlayer.mVertecies[1].z - myPlayer.a;
+		//	isInHouse = true;
+		//}
+		//if (roomDoor.CheckCollision(myPlayer)) {
+
+		//	myPlayer.position.x = 0;
+		//	myPlayer.position.z = 8;
+		//	myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
+		//	camera.Position.x = myPlayer.position.x;
+		//	myPlayer.sphere_center_x = myPlayer.mVertecies[1].x + myPlayer.a;
+		//	myPlayer.sphere_center_z = myPlayer.mVertecies[1].z - myPlayer.a;
+		//	isInHouse = false;
+		//}
 		
 		
 		
