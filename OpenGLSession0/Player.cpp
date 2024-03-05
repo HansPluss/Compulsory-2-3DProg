@@ -232,28 +232,25 @@ double computeDerivativeAtPoint(const std::vector<double>& coefficients, double 
 
 void Player::Patrol(std::vector<double> coefficients)
 {
-	//if(move)
-	//{
-	//	double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
-	//	for (Vertex& vertex : mVertecies) {
-	//		vertex.x += xspeed * 20;
-	//		vertex.y += 0;
-	//		if (xPositiveDir) vertex.z += Derivative;
-	//		else vertex.z -= Derivative;
-	//	}
-	//	xvalue += xspeed;
-	//	if (xvalue >= 1) {
-	//		xspeed *= -1;
-	//		xPositiveDir = false;
-	//	}
-	//	else if (xvalue <= -0.25) {
-	//		xspeed *= -1;
-	//		xPositiveDir = true;
-	//	}
-	//	position.x = mVertecies[1].x + a;
-	//	position.z = mVertecies[1].z - a;
-	//	VBO1.UpdateData(getFlattenedVertices().data(), getFlattenedVertices().size() * sizeof(GLdouble));
-	//}
+	if(move)
+	{
+		double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
+		for (Vertex& vertex : mVertecies) {
+			position.x += xspeed * 20;
+			position.y += 0;
+			if (xPositiveDir) position.z += Derivative;
+			else position.z -= Derivative;
+		}
+		xvalue += xspeed;
+		if (xvalue >= 1) {
+			xspeed *= -1;
+			xPositiveDir = false;
+		}
+		else if (xvalue <= -0.25) {
+			xspeed *= -1;
+			xPositiveDir = true;
+		}
+	}
 }
 
 void Player::flattenVertices()

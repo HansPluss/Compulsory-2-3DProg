@@ -1,13 +1,28 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGLSession0.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Player.cpp
-  Pokal.cpp
-  SphereCollition.cpp
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(239,25): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(239,25): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(239,25): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(239,25): warning C4244:             T=float
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(239,25): warning C4244:         ]
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(241,36): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(241,36): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(241,36): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(241,36): warning C4244:             T=float
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(241,36): warning C4244:         ]
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(242,23): warning C4244: '-=': conversion from 'double' to 'T', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(242,23): warning C4244:         with
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(242,23): warning C4244:         [
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(242,23): warning C4244:             T=float
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\Player.cpp(242,23): warning C4244:         ]
   main.cpp
-C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(167,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(174,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(181,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(188,53): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(195,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(202,52): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(143,51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(169,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(176,57): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(183,58): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(190,53): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(197,59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+C:\Github\Github\3D-Prog\Compulsory-2-3DProg\OpenGLSession0\main.cpp(204,52): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   OpenGLSession0.vcxproj -> C:\Github\Github\3D-Prog\Compulsory-2-3DProg\x64\Debug\Compulsory2Math.exe

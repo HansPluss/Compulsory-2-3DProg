@@ -139,8 +139,8 @@ int main()
 	bool isInHouse = false;
 
 
-	//std::vector<double> patrolPoints = { -1 , 2, -0.5, 0.25, 0, 0 }; // points for patrolling
-	//LSM PatrolPath(patrolPoints, patrolPoints.size() / 2); // the degree of the function, f.exa x^2
+	std::vector<double> patrolPoints = { -1 , 2, -0.5, 0.25, 0, 0 }; // points for patrolling
+	LSM PatrolPath(patrolPoints, patrolPoints.size() / 2); // the degree of the function, f.exa x^2
 
 	//SphereCollition sc(myPlayer, NPC);
 
@@ -152,6 +152,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Tell OpenGL which Shader Program we want to use
 		shaderProgram.Activate();
+
+		NPC.Patrol(PatrolPath.getCoefficients());
 		
 		myPlayer.inputs(window);
 		camera.Inputs(window);
