@@ -95,6 +95,7 @@ int main()
 	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);;
 	Player door(1.0f, glm::vec3(0.0f, -16.0f, -8.0f), 0.00f, 1.0f, 0.0f, 1);
 
+	Player house(1.0f, glm::vec3(0.0f, -16.0f, -19.0f), 0.5f, 0.0f, 0.7f, 3);
 
 	Player roomDoor(1.0f, glm::vec3(45.0f, -16.0f, -14.0f), 0.00f, 1.0f, 0.0f, 1);
 ;
@@ -182,6 +183,13 @@ int main()
 		door.BindVAO();
 		glDrawArrays(GL_TRIANGLES, 0, door.mVertecies.size());
 		door.UnbindVAO();
+
+		glm::mat4 houseModel = glm::mat4(1.0f);
+		houseModel = glm::translate(houseModel, house.position);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj* houseModel));
+		house.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, house.mVertecies.size());
+		house.UnbindVAO();
 
 		glm::mat4 HouseFloorModel = glm::mat4(1.0f);
 		HouseFloorModel = glm::translate(HouseFloorModel, HouseFloor.position);

@@ -111,27 +111,19 @@ std::array<Vertex, 36> Construct::Table(float size, glm::vec3 cordinates, glm::v
     return TableArray;
 }
 
-std::array<Vertex, 36> Construct::House(float size, glm::vec3 cordinates, glm::vec3 scaleXYZ, glm::vec3 Color)
+std::array<Vertex, 36> Construct::House(float size, glm::vec3 Color)
 {
     std::array<Vertex, 36> houseArray;
 
-    float vertexUpperCoordinateX = cordinates.x + scaleXYZ.x;
-    float vertexUpperCoordinateY = cordinates.y + scaleXYZ.y;
-    float vertexUpperCoordinateZ = cordinates.z + scaleXYZ.z;
-
-    float vertexLowerCoordinateX = cordinates.x - scaleXYZ.x;
-    float vertexLowerCoordinateY = cordinates.y - scaleXYZ.y;
-    float vertexLowerCoordinateZ = cordinates.z - scaleXYZ.z;
-
     // House
-    Vertex v0{ vertexLowerCoordinateX, vertexLowerCoordinateY, vertexUpperCoordinateZ, Color.x, Color.y, Color.z };
-    Vertex v1{ vertexUpperCoordinateX, vertexLowerCoordinateY, vertexUpperCoordinateZ, Color.x, Color.y, Color.z };
-    Vertex v2{ vertexUpperCoordinateX, vertexUpperCoordinateY, vertexUpperCoordinateZ, Color.x, Color.y, Color.z };
-    Vertex v3{ vertexLowerCoordinateX, vertexUpperCoordinateY, vertexUpperCoordinateZ, Color.x, Color.y, Color.z };
-    Vertex v4{ vertexLowerCoordinateX, vertexLowerCoordinateY, vertexLowerCoordinateZ, Color.x, Color.y, Color.z };
-    Vertex v5{ vertexUpperCoordinateX, vertexLowerCoordinateY, vertexLowerCoordinateZ, Color.x, Color.y, Color.z };
-    Vertex v6{ vertexUpperCoordinateX, vertexUpperCoordinateY, vertexLowerCoordinateZ, Color.x, Color.y, Color.z };
-    Vertex v7{ vertexLowerCoordinateX, vertexUpperCoordinateY, vertexLowerCoordinateZ, Color.x, Color.y, Color.z };
+    Vertex v0{ -size, -size, size , Color.x, Color.y, Color.z };
+    Vertex v1{ size, -size, size, Color.x, Color.y, Color.z };
+    Vertex v2{ size, size, size , Color.x, Color.y, Color.z };
+    Vertex v3{ -size, size, size ,  Color.x, Color.y, Color.z };
+    Vertex v4{ -size, -size, -size ,  Color.x, Color.y, Color.z };
+    Vertex v5{ size, -size, -size ,  Color.x, Color.y, Color.z };
+    Vertex v6{ size, size, -size ,  Color.x, Color.y, Color.z };
+    Vertex v7{ -size, size, -size , Color.x, Color.y, Color.z };
 
     //// Roof
     //Vertex v8{ 0.0f, scaleXYZ.y * 1.3f, scaleXYZ.z,  Color.x, Color.y, Color.z };

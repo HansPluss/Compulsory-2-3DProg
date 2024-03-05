@@ -59,9 +59,10 @@ std::array<Vertex, 36> mVertecies;
 		else if (figure == 2)
 			mVertecies = con.Table(a, initialPosition, glm::vec3(red, green, blue));
 
+		else if (figure == 3)
+			mVertecies = con.House(a, glm::vec3(red, green, blue));
 		else
-			mVertecies = con.House(a, initialPosition, glm::vec3(0, 0, 0), glm::vec3(red, green, blue));
-
+			mVertecies = con.Cube(initialPosition, glm::vec3(0, 0, 0), glm::vec3(red, green, blue));
 		VAO5.Bind();
 		VBO1.Bind();
 		glBufferData(GL_ARRAY_BUFFER, mVertecies.size() * sizeof(Vertex), mVertecies.data(), GL_STATIC_DRAW);

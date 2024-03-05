@@ -15,6 +15,6 @@ public:
 	std::array<Vertex, 36> Table(float size, glm::vec3 cordinates , glm::vec3 Color);
 
 	//change size to fit 
-	std::array<Vertex, 36> House(float size, glm::vec3 cordinates, glm::vec3 scaleXYZ, glm::vec3 Color);
+	std::array<Vertex, 36> House(float size, glm::vec3 Color);
 };
 
