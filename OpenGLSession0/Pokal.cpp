@@ -71,38 +71,7 @@ std::vector<GLfloat> Pokal::getFlattenedVertices() const
 	return flattenedVertices;
 }
 
-bool Pokal::CheckCollision(const Player& otherCube)
-{
-	// Iterate through each vertex in the current cube
-	for (const VertexPokal& vertex : mVertecies) {
-		// Iterate through each vertex in the other cube
-		for (const Vertex& otherVertex : otherCube.mVertecies) {
-			// Calculate the distance between the two vertices
-			float distance = glm::length(glm::vec3(vertex.x * scaleX + position.x,
-				vertex.y * scaleY + position.y,
-				vertex.z * scaleZ + position.z) -
-				glm::vec3(otherVertex.x * otherCube.scaleX + otherCube.position.x,
-					otherVertex.y * otherCube.scaleY + otherCube.position.y,
-					otherVertex.z * otherCube.scaleZ + otherCube.position.z));
-			if (position.x + a * scaleX > otherCube.position.x - otherCube.a * otherCube.scaleX &&
-				otherCube.position.x + otherCube.a * otherCube.scaleX > position.x - a * scaleX) {
-				//std::cout << "Collision X " << std::endl;
-			}
 
-			// Check if the distance is less than a threshold (adjust as needed)
-			if (distance < 0.50f) {
-				// Collision detected
-				//std::cout << "Collision Distance: " << distance << std::endl;
-				return true;
-			}
-
-
-		}
-	}
-
-	// No collision detected
-	return false;
-}
 
 
 void Pokal::flattenVertices()

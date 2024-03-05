@@ -113,7 +113,6 @@ public:
 	void UpdateVertices(float Xspeed, float Yspeed, float Zspeed);
 	
 	std::vector<GLfloat> getFlattenedVertices() const;
-	bool CheckCollision(const Player& otherCube);
 	void flattenVertices();
 	
 private:

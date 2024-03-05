@@ -69,26 +69,26 @@ VBO Player::GetVBO()
 
 void Player::inputs(GLFWwindow* window)
 {
-	float speed = 0.01f;
+	float speed = 0.1f;
 	float translationSpeed = speed;
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS && up) {
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && up) {
 
 		UpdateVertices(0, 0, -speed, glm::vec3(0, 0, 1));
 		//position.z -= translationSpeed;
 
 	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS && down) {
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS && down) {
 
 		UpdateVertices(0, 0, speed, glm::vec3(0, 0, 1));
 		//position.z += translationSpeed;
 	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS && left) {
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS && left) {
 
 		UpdateVertices(-speed, 0, 0, glm::vec3(1, 0, 0));
 		//position.x -= translationSpeed;
 
 	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS && right) {
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS && right) {
 
 		UpdateVertices(speed, 0, 0, glm::vec3(1, 0, 0));
 		//position.x += translationSpeed;
@@ -123,78 +123,27 @@ bool Player::CheckCollision( Player& otherCube)
 	float dy = std::abs(position.y - otherCube.position.y);
 	float dz = std::abs(position.z - otherCube.position.z);
 	*/
-	cout << distance_centers << endl;
-	cout << "Cube1 pos " << position.x << " " << position.y << " " << position.z << endl;
-	cout << "Cube2 pos " << otherCube.position.x << " " << otherCube.position.y << " " << otherCube.position.z << endl;
+	//cout << distance_centers << endl;
+	//cout << "Cube1 pos " << position.x << " " << position.y << " " << position.z << endl;
+	//cout << "Cube2 pos " << otherCube.position.x << " " << otherCube.position.y << " " << otherCube.position.z << endl;
 
 	// If the distance between centers is less than the sum of the radii, collision occurs
 	if (distance_centers <= (sphere_radius + otherCube.sphere_radius)) {
 
-		//float minimuntranslation = sphere_radius +otherCube.sphere_radius - distance_centers;
-		//auto dirvec = glm::normalize(position - otherCube.position);
-		//position -= dirvec * minimuntranslation;
+		float minimuntranslation = sphere_radius +otherCube.sphere_radius - distance_centers;
+		auto dirvec = glm::normalize(position - otherCube.position);
+		position += dirvec * minimuntranslation;
+		//otherCube.position += dirvec * minimuntranslation;
 
-		float dx = std::abs(position.x - otherCube.position.x);
-		float dy = std::abs(position.y - otherCube.position.y);
-		float dz = std::abs(position.z - otherCube.position.z);
-
-		if (dx > dz) {
-			if (position.x < otherCube.position.x) {
-				right = false;
-			}
-			else {
-
-				left = false;
-
-			}
-		}
-		else if (dy < dx && dy < dz) {
-			if (position.z < otherCube.position.z) {
-				down = false;
-			}
-			else {
-				up = false;
-			}
-		}
 		otherCube.move = false;
+		return true; 
 
 	}
 	else {
-		up = true;
-		down = true;
-		left = true;
-		right = true;
+;
 		otherCube.move = true;
-		//std::cout << "X " << dx << "Y " << dy << "Z " << dz << "\n";
 	}
 
-	for (const Vertex& vertex : mVertecies) {
-		// Iterate through each vertex in the other cube
-		for (const Vertex& otherVertex : otherCube.mVertecies) {
-			// Calculate the distance between the two vertices
-			float distance = glm::length(glm::vec3(vertex.x * scaleX + position.x,
-				vertex.y * scaleY + position.y,
-				vertex.z * scaleZ + position.z) -
-				glm::vec3(otherVertex.x * otherCube.scaleX + otherCube.position.x,
-					otherVertex.y * otherCube.scaleY + otherCube.position.y,
-					otherVertex.z * otherCube.scaleZ + otherCube.position.z));
-			if (position.x + a * scaleX > otherCube.position.x - otherCube.a * otherCube.scaleX &&
-				otherCube.position.x + otherCube.a * otherCube.scaleX > position.x - a * scaleX) {
-				//std::cout << "Collision X " << std::endl;
-			}
-
-			// Check if the distance is less than a threshold (adjust as needed)
-			
-			
-			if (distance < 1.0f) {
-				// Collision detected
-				//std::cout << "Collision Distance: " << distance << std::endl;
-				return true;
-			}
-
-
-		}
-	}
 
 	// No collision detected
 	return false;
@@ -232,11 +181,11 @@ double computeDerivativeAtPoint(const std::vector<double>& coefficients, double 
 
 void Player::Patrol(std::vector<double> coefficients)
 {
-	if(move)
-	{
-		double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 512;
+	//if(move)
+	//{
+		double Derivative = computeDerivativeAtPoint(coefficients, xvalue) / 4096;
 		for (Vertex& vertex : mVertecies) {
-			position.x += xspeed * 20;
+			position.x += xspeed / 2;
 			position.y += 0;
 			if (xPositiveDir) position.z += Derivative;
 			else position.z -= Derivative;
@@ -250,7 +199,7 @@ void Player::Patrol(std::vector<double> coefficients)
 			xspeed *= -1;
 			xPositiveDir = true;
 		}
-	}
+	//}
 }
 
 void Player::flattenVertices()

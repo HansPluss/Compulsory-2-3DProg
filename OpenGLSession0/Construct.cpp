@@ -113,5 +113,56 @@ std::array<Vertex, 36> Construct::Table(float size, glm::vec3 cordinates, glm::v
 
 std::array<Vertex, 36> Construct::House(float size, glm::vec3 cordinates, glm::vec3 scaleXYZ, glm::vec3 Color)
 {
-	return std::array<Vertex, 36>();
+    std::array<Vertex, 36> houseArray;
+
+    float vertexUpperCoordinateX = cordinates.x + scaleXYZ.x;
+    float vertexUpperCoordinateY = cordinates.y + scaleXYZ.y;
+    float vertexUpperCoordinateZ = cordinates.z + scaleXYZ.z;
+
+    float vertexLowerCoordinateX = cordinates.x - scaleXYZ.x;
+    float vertexLowerCoordinateY = cordinates.y - scaleXYZ.y;
+    float vertexLowerCoordinateZ = cordinates.z - scaleXYZ.z;
+
+    // House
+    Vertex v0{ vertexLowerCoordinateX, vertexLowerCoordinateY, vertexUpperCoordinateZ, Color.x, Color.y, Color.z };
+    Vertex v1{ vertexUpperCoordinateX, vertexLowerCoordinateY, vertexUpperCoordinateZ, Color.x, Color.y, Color.z };
+    Vertex v2{ vertexUpperCoordinateX, vertexUpperCoordinateY, vertexUpperCoordinateZ, Color.x, Color.y, Color.z };
+    Vertex v3{ vertexLowerCoordinateX, vertexUpperCoordinateY, vertexUpperCoordinateZ, Color.x, Color.y, Color.z };
+    Vertex v4{ vertexLowerCoordinateX, vertexLowerCoordinateY, vertexLowerCoordinateZ, Color.x, Color.y, Color.z };
+    Vertex v5{ vertexUpperCoordinateX, vertexLowerCoordinateY, vertexLowerCoordinateZ, Color.x, Color.y, Color.z };
+    Vertex v6{ vertexUpperCoordinateX, vertexUpperCoordinateY, vertexLowerCoordinateZ, Color.x, Color.y, Color.z };
+    Vertex v7{ vertexLowerCoordinateX, vertexUpperCoordinateY, vertexLowerCoordinateZ, Color.x, Color.y, Color.z };
+
+    //// Roof
+    //Vertex v8{ 0.0f, scaleXYZ.y * 1.3f, scaleXYZ.z,  Color.x, Color.y, Color.z };
+    //Vertex v9{ 0.0f, scaleXYZ.y * 1.3f, -scaleXYZ.z, Color.x, Color.y, Color.z };
+    houseArray =
+    {
+        // Front face
+        v0, v1, v3,
+        v3, v1, v2,
+
+        // Back face
+        v4, v5, v7,
+        v7, v5, v6,
+
+        // Right face
+        v1, v5, v2,
+        v2, v5, v6,
+
+        // Left face
+        v4, v0, v7,
+        v7, v0, v3,
+
+        // Bottom face
+        v4, v5, v0,
+        v0, v5, v1,
+
+        // Top face
+        v3, v2, v7,
+        v7, v2, v6,
+
+    };
+
+    return houseArray;
 }

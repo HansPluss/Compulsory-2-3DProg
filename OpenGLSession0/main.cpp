@@ -69,45 +69,37 @@ int main()
 
 	
 	
-	//std::vector<Pokal> myPokaler;
-	//std::srand(static_cast<unsigned>(std::time(nullptr)));
-	//float maxX = 18;
-	//float minX = -18;
-	//float maxZ = 18;
-	//float minZ = -18;
-	//int maxPokals = 8;
-	//int score = 0;
+	std::vector<Player> myPokaler;
+	std::srand(static_cast<unsigned>(std::time(nullptr)));
+	float maxX = 18;
+	float minX = -18;
+	float maxZ = 18;
+	float minZ = -18;
+	const int maxPokals = 8;
+	int score = 0;
+	float scale = -7;
+
 
 
 	//creating our objects in the scene
-	//for (int i = 0; i < maxPokals; ++i) {
-	//	Pokal pokal(1.0f, glm::vec3(0.0f, -8.0f, 0.0f), 1.0f, 1.0f, 1.f, 0.75f, 1.0f, 0.0f);
-	//	myPokaler.push_back(pokal);
+	for (int i = 0; i < maxPokals; ++i) {
+		float randomX = static_cast<float>(std::rand()) / RAND_MAX * (maxX - minX) + minX;
+		float randomZ = static_cast<float>(std::rand()) / RAND_MAX * (maxZ - minZ) + minZ;
+		Player pokal(1.0f, glm::vec3(randomX, -16.0f, randomZ), 0.75f, 1.0f, 0.0f);
+		myPokaler.push_back(pokal);
+	}
 
+	Player myPlayer(1.0f, glm::vec3(0,-16,0), 0.10f, 0.0f, 0.50f, 3);
 
-	//}
-	//for (int i = 0; i < maxPokals; ++i) {
-
-	//	float randomX = static_cast<float>(std::rand()) / RAND_MAX * (maxX - minX) + minX;
-	//	float randomZ = static_cast<float>(std::rand()) / RAND_MAX * (maxZ - minZ) + minZ;
-
-	//	myPokaler[i].position.x = randomX;
-	//	myPokaler[i].position.z = randomZ;
-	//	myPokaler[i].ConstructVBO(myPokaler[i].getFlattenedVertices(),false);
-	//	myPokaler[i].UpdateVertices(0, 0, 0);
-	//}
-	Player myPlayer(1.0f, glm::vec3(0,-8,0), 1.0f, 1.0f, 1.0f, 0.10f, 0.0f, 0.50f);
-
-
-	Pokal HouseFloor(1.0f, glm::vec3(45.0f, -8.5f, 0.0f), 15.0f, 0.50f, 15.0f, 0.10f, 0.0f, 0.0f);
+	Pokal HouseFloor(1.0f, glm::vec3(22.5f, -8.5f, 0.0f), 15.0f, 0.50f, 15.0f, 0.10f, 0.0f, 0.0f);
 	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);;
-	Player door(1.0f, glm::vec3(0.0f, -8.0f, -8.0f), 2.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
+	Player door(1.0f, glm::vec3(0.0f, -16.0f, -8.0f), 0.00f, 1.0f, 0.0f, 1);
 
 
-	Player roomDoor(1.0f, glm::vec3(45.0f, -8.0f, -14.0f), 2.0f, 1.0f, 1.0f, 0.00f, 1.0f, 0.0f);
+	Player roomDoor(1.0f, glm::vec3(45.0f, -16.0f, -14.0f), 0.00f, 1.0f, 0.0f, 1);
 ;
 
-	Player NPC(1.0f, glm::vec3(-8.0f, -8, 0.0f), 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.00f);
+	Player NPC(1.0f, glm::vec3(-8.0f, -16, 0.0f), 1.0f, 0.0f, 0.00f, 2);
 
 
 	Pokal mainFloor(1.0f, glm::vec3(0.0f, -8.5f, 0.0f), 20.0f, 0.5f, 20.0f);
@@ -127,7 +119,7 @@ int main()
 	
 	
 	//Camera object
-	Camera camera(width, height, glm::vec3(0.0f, 3.0f, 55.0f));
+	Camera camera(width, height, glm::vec3(0.0f, 3.0f, 70.0f));
 	
 	//speed of cube
 	float translationSpeed = 0.05f;
@@ -139,7 +131,7 @@ int main()
 	bool isInHouse = false;
 
 
-	std::vector<double> patrolPoints = { -1 , 2, -0.5, 0.25, 0, 0 }; // points for patrolling
+	std::vector<double> patrolPoints = { -1 , 2, 1, -2, 2, 2 }; // points for patrolling
 	LSM PatrolPath(patrolPoints, patrolPoints.size() / 2); // the degree of the function, f.exa x^2
 
 	//SphereCollition sc(myPlayer, NPC);
@@ -158,6 +150,7 @@ int main()
 		myPlayer.inputs(window);
 		camera.Inputs(window);
 		myPlayer.CheckCollision(NPC);
+
 		//Set render distance and FOV
 		glm::mat4 viewproj= camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
 
@@ -204,13 +197,21 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, NPC.mVertecies.size());
 		NPC.UnbindVAO();
 
+		glm::mat4 PokalModel[maxPokals];
+
+		for (int i = 0; i < maxPokals; ++i)
+		{
+			PokalModel[i] = glm::mat4(1.0f);
+			PokalModel[i] = glm::translate(PokalModel[i], myPokaler[i].position);
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * PokalModel[i]));
+			myPokaler[i].BindVAO();
+			glDrawArrays(GL_TRIANGLES, 0, myPokaler[i].mVertecies.size());
+			myPokaler[i].UnbindVAO();
+
+		}
+
 
 		
-
-
-		//NPC
-		//NPC.Patrol(PatrolPath.getCoefficients());
-		///*sc;*/
 
 
 		//glUniform1f(uniID, scaleValue);
@@ -229,38 +230,32 @@ int main()
 
 		
 
-		//for (int i = 0; i < maxPokals; ++i) {
-		//	if (myPokaler[i].CheckCollision(myPlayer) /*|| myPlayer.PokalCollision(myPokaler[i])*/) {
-		//		// Collision detected between player and pokal[i]
-		//		myPokaler[i].position.y += 10;
-		//		myPokaler[i].position.z = -6;
-		//		myPokaler[i].sphere_center_y += 10;
-		//		myPokaler[i].sphere_center_z = -6;
-		//		myPokaler[i].UpdateVertices(0, 10, 0);
-		//		score++;
-		//		std::cout << "Current Score: " << score << std::endl;
-		//		// Do something when a collision occurs, e.g., remove the pokal or decrease player health
-		//	}
-		//}
-		//if (myPlayer.CheckCollision(door)) {
-		//	cout << "Door" << endl;
-		//	myPlayer.position.x = 45;
-		//	myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
-		//	camera.Position.x = myPlayer.position.x; // for le door later
-		//	myPlayer.sphere_center_x = myPlayer.mVertecies[1].x + myPlayer.a;
-		//	myPlayer.sphere_center_z = myPlayer.mVertecies[1].z - myPlayer.a;
-		//	isInHouse = true;
-		//}
-		//if (roomDoor.CheckCollision(myPlayer)) {
+		for (int i = 0; i < maxPokals; ++i) {
+			if (myPokaler[i].CheckCollision(myPlayer) || myPlayer.CheckCollision(myPokaler[i])) {
+				// Collision detected between player and pokal[i]
+				myPokaler[i].position.y = 0;
+				myPokaler[i].position.x = scale; 
+				myPokaler[i].position.z = -6;
+				score++;
+				scale += 2; 
+				std::cout << "Current Score: " << score << std::endl;
+				// Do something when a collision occurs, e.g., remove the pokal or decrease player health
+			}
+		}
+		if ((myPlayer.CheckCollision(door) || myPlayer.CheckCollision(door)) && glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+			cout << "Door" << endl;
+			myPlayer.position.x = 45;
+			myPlayer.position.z = 8;
+			camera.Position.x = myPlayer.position.x; // for le door later
+			isInHouse = true;
+		}
+		if ((roomDoor.CheckCollision(myPlayer) || myPlayer.CheckCollision(roomDoor)) && glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 
-		//	myPlayer.position.x = 0;
-		//	myPlayer.position.z = 8;
-		//	myPlayer.UpdateVertices(0, 0, 0, glm::vec3(0, 0, 0));
-		//	camera.Position.x = myPlayer.position.x;
-		//	myPlayer.sphere_center_x = myPlayer.mVertecies[1].x + myPlayer.a;
-		//	myPlayer.sphere_center_z = myPlayer.mVertecies[1].z - myPlayer.a;
-		//	isInHouse = false;
-		//}
+			myPlayer.position.x = 0;
+			myPlayer.position.z = 8;
+			camera.Position.x = myPlayer.position.x;
+			isInHouse = false;
+		}
 		
 		
 		
