@@ -93,9 +93,9 @@ int main()
 
 	Pokal HouseFloor(1.0f, glm::vec3(22.5f, -8.5f, 0.0f), 15.0f, 0.50f, 15.0f, 0.10f, 0.0f, 0.0f);
 	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);;
-	Player door(1.0f, glm::vec3(0.0f, -16.0f, -8.0f), 0.00f, 1.0f, 0.0f, 1);
+	Player door(1.0f, glm::vec3(0.0f, -16.0f, -15.0f), 0.00f, 1.0f, 0.0f, 1);
 
-	Player house(1.0f, glm::vec3(0.0f, -16.0f, -19.0f), 0.5f, 0.0f, 0.7f, 3);
+	Player house(5.0f, glm::vec3(0.0f, -16.0f, -19.0f), 0.5f, 0.0f, 0.7f, 3);
 
 	Player roomDoor(1.0f, glm::vec3(45.0f, -16.0f, -14.0f), 0.00f, 1.0f, 0.0f, 1);
 ;
@@ -136,6 +136,7 @@ int main()
 	LSM PatrolPath(patrolPoints, patrolPoints.size() / 2); // the degree of the function, f.exa x^2
 
 	//SphereCollition sc(myPlayer, NPC);
+	glfwSwapInterval(1);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -151,6 +152,9 @@ int main()
 		myPlayer.inputs(window);
 		camera.Inputs(window);
 		myPlayer.CheckCollision(NPC);
+		myPlayer.CheckCollision(house);
+		NPC.CheckCollision(door);
+		NPC.CheckCollision(house);
 
 		//Set render distance and FOV
 		glm::mat4 viewproj= camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix");
@@ -186,6 +190,7 @@ int main()
 
 		glm::mat4 houseModel = glm::mat4(1.0f);
 		houseModel = glm::translate(houseModel, house.position);
+		houseModel = glm::scale(houseModel, glm::vec3(5,5,5));
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj* houseModel));
 		house.BindVAO();
 		glDrawArrays(GL_TRIANGLES, 0, house.mVertecies.size());

@@ -57,10 +57,10 @@ std::array<Vertex, 36> mVertecies;
 
 
 		else if (figure == 2)
-			mVertecies = con.Table(a, initialPosition, glm::vec3(red, green, blue));
+			mVertecies = con.Table(1, initialPosition, glm::vec3(red, green, blue));
 
 		else if (figure == 3)
-			mVertecies = con.House(a, glm::vec3(red, green, blue));
+			mVertecies = con.House(1, glm::vec3(red, green, blue));
 		else
 			mVertecies = con.Cube(initialPosition, glm::vec3(0, 0, 0), glm::vec3(red, green, blue));
 		VAO5.Bind();
