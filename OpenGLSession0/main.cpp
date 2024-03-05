@@ -101,7 +101,9 @@ int main()
 	Player roomDoor(1.0f, glm::vec3(45.0f, -16.0f, -14.0f), 0.0f, 1.0f, 0.0f, 1);
 ;
 
-	Player NPC(1.0f, glm::vec3(-8.0f, -16, 0.0f), 1.0f, 0.0f, 0.0f, 2);
+	Player NPC(1.0f, glm::vec3(-8.0f, -16, 0.0f), 1.0f, 0.0f, 0.0f, 1);
+
+	Player myTable1(3.5f, glm::vec3(45, -16, -6), 0.929411764f, 0.831372549f, 0.760784313f, 2);
 
 
 	Pokal mainFloor(1.0f, glm::vec3(0.0f, -8.5f, 0.0f), 20.0f, 0.5f, 20.0f);
@@ -215,6 +217,14 @@ int main()
 		glDrawArrays(GL_TRIANGLES, 0, NPC.mVertecies.size());
 		NPC.UnbindVAO();
 
+		glm::mat4 TableModel = glm::mat4(1.0f);
+		TableModel = glm::translate(TableModel, myTable1.position);
+		//TableModel = glm::scale(TableModel, glm::vec3(0.5f,1.f,0.5f));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "camMatrix"), 1, GL_FALSE, glm::value_ptr(viewproj * TableModel));
+		myTable1.BindVAO();
+		glDrawArrays(GL_TRIANGLES, 0, myTable1.mVertecies.size());
+		myTable1.UnbindVAO();
+
 		// Drawing trophies
 		glm::mat4 PokalModel[maxPokals];
 
@@ -246,6 +256,19 @@ int main()
 
 
 
+		if (myTable1.CheckCollision(myPlayer) || myPlayer.CheckCollision(myTable1))
+		{
+			//makes player able to move table around
+		}
+		if (roomDoor.CheckCollision(myTable1) || myTable1.CheckCollision(roomDoor))
+		{
+			//makes table able to push door
+		}
+		if (myTable1.CheckCollision(roomDoor) || roomDoor.CheckCollision(myTable1))
+		{
+			//if "if-statment" is above, makes door able to push table
+			//makes door have collition with table
+		}
 
 		
 

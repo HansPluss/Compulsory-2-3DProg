@@ -1,9 +1,9 @@
 #include "Construct.h"
 
-std::array<Vertex, 36> Construct::Cube(glm::vec3 cordinates, glm::vec3 sizeXYZ, glm::vec3 Color)
+std::array<Vertex, 36> Construct::Cube(glm::vec3 Color)
 {
 	std::array<Vertex, 36> CubeArray;
-    sizeXYZ = glm::vec3(1.f, 1.f, 1.f);
+   glm::vec3 sizeXYZ = glm::vec3(1.f, 1.f, 1.f);
     Vertex v0{ -sizeXYZ.x, -sizeXYZ.y, sizeXYZ.z , Color.x, Color.y, Color.z };
     Vertex v1{ sizeXYZ.x, -sizeXYZ.y, sizeXYZ.z, Color.x, Color.y, Color.z };
     Vertex v2{ sizeXYZ.x, sizeXYZ.y, sizeXYZ.z , Color.x, Color.y, Color.z };
@@ -63,9 +63,10 @@ std::array<Vertex, 36> Construct::Cube(glm::vec3 cordinates, glm::vec3 sizeXYZ, 
     return CubeArray; 
 }
 
-std::array<Vertex, 36> Construct::Table(float size, glm::vec3 cordinates, glm::vec3 Color)
+std::array<Vertex, 36> Construct::Table(glm::vec3 Color)
 {
     std::array<Vertex, 36> TableArray;
+    float size = 1;
 
     Vertex v0{ -size, -size, size , Color.x, Color.y, Color.z };
     Vertex v1{ size, -size, size, Color.x, Color.y, Color.z };
@@ -76,10 +77,10 @@ std::array<Vertex, 36> Construct::Table(float size, glm::vec3 cordinates, glm::v
     Vertex v6{ size, size, -size ,  Color.x, Color.y, Color.z };
     Vertex v7{ -size, size, -size , Color.x, Color.y, Color.z };
 
-    Vertex v8{ cordinates.x - (3 * size) - cordinates.x,  size, cordinates.z + (4 * size) , Color.x, Color.y, Color.z};
-    Vertex v9{ cordinates.x + (3 * size) - cordinates.x,  size, cordinates.z + (4 * size) , Color.x, Color.y, Color.z };
-    Vertex v10{ cordinates.x - (3 * size) - cordinates.x,  size, cordinates.z - (4 * size), Color.x, Color.y, Color.z };
-    Vertex v11{ cordinates.x + (3 * size) - cordinates.x,  size, cordinates.z - (4 * size) , Color.x, Color.y, Color.z };
+    Vertex v8{(3 * -size),  size, (4 * size) , Color.x, Color.y, Color.z};
+    Vertex v9{(3 * size),  size, (4 * size) , Color.x, Color.y, Color.z };
+    Vertex v10{ (3 * -size) ,  size,(4 * -size), Color.x, Color.y, Color.z };
+    Vertex v11{(3 * size), size,(4 * -size) , Color.x, Color.y, Color.z };
 
     TableArray = {
         // Front face
@@ -111,9 +112,10 @@ std::array<Vertex, 36> Construct::Table(float size, glm::vec3 cordinates, glm::v
     return TableArray;
 }
 
-std::array<Vertex, 48> Construct::House(float size, glm::vec3 Color)
+std::array<Vertex, 48> Construct::House(glm::vec3 Color)
 {
     std::array<Vertex, 48> houseArray;
+    float size = 1.f; 
 
     // House
     Vertex v0{ -size, -size, size , Color.x, Color.y, Color.z };

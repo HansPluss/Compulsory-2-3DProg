@@ -11,8 +11,8 @@ struct Vertex
 class Construct
 {
 public:
-	std::array<Vertex, 36> Cube(glm::vec3 cordinates, glm::vec3 sizeXYZ, glm::vec3 Color);
-	std::array<Vertex, 36> Table(float size, glm::vec3 cordinates , glm::vec3 Color);
-	std::array<Vertex, 48> House(float size, glm::vec3 Color);
+	std::array<Vertex, 36> Cube(glm::vec3 Color);
+	std::array<Vertex, 36> Table(glm::vec3 Color);
+	std::array<Vertex, 48> House( glm::vec3 Color);
 };
 

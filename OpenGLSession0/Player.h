@@ -55,7 +55,7 @@ std::array<Vertex, 48> mHouseVertecies;
 		//Cube
 		if (figure == 1)
 		{
-			mVertecies = con.Cube(initialPosition, glm::vec3(0, 0, 0), glm::vec3(red, green, blue));
+			mVertecies = con.Cube(glm::vec3(red, green, blue));
 
 			VAO5.Bind();
 			VBO1.Bind();
@@ -67,7 +67,7 @@ std::array<Vertex, 48> mHouseVertecies;
 		}
 		else if (figure == 2)
 		{
-			mVertecies = con.Table(1, initialPosition, glm::vec3(red, green, blue));
+			mVertecies = con.Table(glm::vec3(red, green, blue));
 
 			VAO5.Bind();
 			VBO1.Bind();
@@ -80,7 +80,7 @@ std::array<Vertex, 48> mHouseVertecies;
 
 		else if (figure == 3)
 		{
-			mHouseVertecies = con.House(1, glm::vec3(red, green, blue));
+			mHouseVertecies = con.House(glm::vec3(red, green, blue));
 
 			VAO5.Bind();
 			VBO1.Bind();
@@ -92,7 +92,7 @@ std::array<Vertex, 48> mHouseVertecies;
 		}
 		else
 		{
-			mVertecies = con.Cube(initialPosition, glm::vec3(0, 0, 0), glm::vec3(red, green, blue));
+			mVertecies = con.Cube(glm::vec3(red, green, blue));
 
 			VAO5.Bind();
 			VBO1.Bind();
