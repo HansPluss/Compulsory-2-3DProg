@@ -93,7 +93,7 @@ int main()
 
 	Pokal HouseFloor(1.0f, glm::vec3(22.5f, -8.5f, 0.0f), 15.0f, 0.50f, 15.0f, 0.10f, 0.0f, 0.0f);
 	HouseFloor.ConstructVBO(HouseFloor.getFlattenedVertices(), false);;
-	Player door(1.0f, glm::vec3(0.0f, -16.0f, -15.0f), 0.00f, 1.0f, 0.0f, 1);
+	Player door(1.0f, glm::vec3(0.0f, -16.0f, -13.0f), 0.00f, 1.0f, 0.0f, 1);
 
 	Player house(5.0f, glm::vec3(0.0f, -16.0f, -19.0f), 0.5f, 0.0f, 0.7f, 3);
 
