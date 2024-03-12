@@ -28,7 +28,7 @@ const unsigned int width = 800;
 const unsigned int height = 800;
 using namespace std;
 
-
+void processInput(GLFWwindow* window);
 
 
 int main()
@@ -138,6 +138,8 @@ int main()
 
 	//SphereCollition sc(myPlayer, NPC);
 	glfwSwapInterval(1);
+	glEnable(GL_DEPTH_TEST);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -149,7 +151,7 @@ int main()
 		shaderProgram.Activate();
 
 		NPC.Patrol(PatrolPath.getCoefficients());
-		
+		processInput(window);
 		myPlayer.inputs(window);
 		camera.Inputs(window);
 		myPlayer.CheckCollision(NPC);
@@ -323,4 +325,10 @@ int main()
 	// Terminate GLFW before ending the program
 	glfwTerminate();
 	return 0;
+}
+
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
 }
